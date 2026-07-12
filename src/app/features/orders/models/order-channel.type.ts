@@ -1,0 +1,1 @@
+export type OrderChannel = 'walk-in'| 'delivery'| 'online';

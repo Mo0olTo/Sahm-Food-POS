@@ -1,0 +1,43 @@
+<section class="order-column">
+
+ 
+  @if (orders().length > 0) {
+
+    <header class="order-column__header">
+      <h2 class="order-column__title">
+        {{ title() }}
+      </h2>
+      <span class="order-column__count" aria-label="Order count">
+        {{ orders().length }}
+      </span>
+    </header>
+  
+    <div class="order-column__list" role="list">
+  
+      @for (order of orders(); track order.id) {
+  
+        <app-order-card
+          [order]="order"
+          (selected)="orderSelected.emit($event)"
+          >
+        </app-order-card>
+  
+      }
+  
+      @empty {
+        <p class="order-column__empty">No orders</p>
+      }
+  
+    </div> 
+  
+
+} @else {
+
+    <app-empty-state
+        title="No Orders"
+        description="No active orders in this channel.">
+    </app-empty-state>
+
+}
+
+</section>

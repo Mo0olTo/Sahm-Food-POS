@@ -1,0 +1,53 @@
+<section class="order-board h-full">
+
+  @if (loading()) {
+
+    <app-skeleton
+    [rows]="8"
+    ></app-skeleton>
+
+} @else if (error()) {
+
+    <app-error-state
+        (retry)="reload()">
+    </app-error-state>
+
+} @else {
+
+  <div class="grid h-full grid-cols-1 gap-4 md:grid-cols-12 md:gap-6">
+
+    <!-- Board -->
+    <div class="col-span-1 md:col-span-9">
+
+      <div class="grid grid-cols-1 gap-4 h-full sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+
+        @for (column of columns(); track column.channel) {
+
+          <app-order-column
+            [title]="column.title"
+            [orders]="column.orders"
+            (orderSelected)="onOrderSelected($event)">
+          </app-order-column>
+
+        }
+
+      </div>
+
+    </div>
+
+    <!-- Details Panel -->
+    <div class="col-span-1 md:col-span-3 md:max-h-[calc(100vh-6rem)] md:sticky md:top-4">
+
+      <app-order-details
+        [order]="selectedOrder()">
+      </app-order-details>
+
+    </div>
+
+  </div>
+
+}
+
+
+
+</section>

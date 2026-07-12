@@ -1,0 +1,25 @@
+// Board layout — mobile first, then tablet, then desktop.
+// The actual responsive grid lives in the template (inline Tailwind).
+// This file owns only the structural rules Tailwind can't express:
+//   - filling the parent flex chain so columns can be `h-full`
+//   - giving loading / error states a visible frame
+
+.order-board {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  // Establish a minimum so skeleton / error-state have something
+  // to fill when the parent flex chain doesn't provide a cross-axis
+  // height (the orders page is a row on tablet+, so the board's
+  // height defaults to its content's height without this).
+  min-height: 24rem;
+}
+
+// State wrapper for skeleton / error-state. Stretchs to the section
+// if there's room, otherwise falls back to the section's min-height.
+.order-board__state {
+  flex: 1 1 auto;
+  display: flex;
+  width: 100%;
+  min-height: 0;
+}

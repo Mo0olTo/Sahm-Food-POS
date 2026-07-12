@@ -1,0 +1,40 @@
+<div
+  class="order-card"
+  (click)="onSelect()"
+  [class.order-card--info]="statusTone() === 'info'"
+  [class.order-card--warn]="statusTone() === 'warn'"
+  [class.order-card--success]="statusTone() === 'success'"
+  [class.order-card--muted]="statusTone() === 'muted'"
+  [attr.aria-label]="'Order ' + order().orderNumber + ', ' + order().status"
+>
+  <header class="order-card__header">
+    <div class="order-card__id">
+      
+      <span class="order-card__channel" [attr.data-channel]="channelTone()">
+        <span class="order-card__channel-glyph" aria-hidden="true">{{ channelIcon() }}</span>
+        {{ channelLabel() }}
+      </span>
+    </div>
+
+    <app-status-badge
+      class="order-card__badge"
+      [status]="order().status">
+    </app-status-badge>
+  </header>
+    <div class="w-full flex items-center justify-between px-3 mt-2">
+      <p class="text-[var(--color-sec-text)] font-bold capitalize ">
+        {{ order().customerName }}
+      </p>
+      <span class="text-[var(--color-sec-text)] font-semibold">#{{ order().orderNumber }}</span>
+    </div>
+ 
+  <footer class="order-card__footer">
+    <span class="text-[var(--color-sec-text)] font-bold capitalize">
+      {{ itemsLabel() }}
+    </span>
+    <span>{{ totalPrice() | currency:'EGP' }}</span>
+    <time class="order-card__time" [attr.datetime]="order().createdAt.toString()">
+      {{ order().createdAt | date:'shortTime' }}
+    </time>
+  </footer>
+</div>

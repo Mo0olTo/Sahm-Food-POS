@@ -1,0 +1,47 @@
+<section
+    class="h-full rounded-xl border border-[var(--color-borders)] bg-[var(--color-surface)] p-6">
+
+    @if(order()) {
+
+        <h2 class="text-xl font-semibold text-white">
+            {{ order()!.orderNumber }}
+        </h2>
+
+        <p class="mt-1 text-gray-400 text-2xl">
+            {{ order()!.customerName }}
+        </p>
+
+        <div class="mt-4">
+
+            <app-status-badge
+                [status]="order()!.status">
+            </app-status-badge>
+
+        </div>
+
+        <div>
+            <h4>Items</h4>
+          
+            <ul>
+              @for (item of order()?.items; track item.name) {
+                <li class="text-[var(--color-primary)] text-xl font-semibold">
+                  {{ item.name }} x {{ item.quantity }}
+                </li>
+              }
+            </ul>
+          </div>
+
+    }
+
+    @else {
+
+        <div
+            class="flex h-full items-center justify-center text-gray-500">
+
+            Select an order
+
+        </div>
+
+    }
+
+</section>

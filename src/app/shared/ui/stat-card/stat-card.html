@@ -1,0 +1,14 @@
+<div
+  class="flex min-w-32 flex-col rounded-xl border border-[var(--color-borders)] bg-[var(--color-surface)] p-4 transition-all duration-200 hover:border-[var(--color-primary)]"
+  [class]="accentClass()"
+  >
+
+  <span class="text-sm text-[var(--color-primary)] ">
+    {{ title() }}
+  </span>
+
+  <span class="mt-2 text-3xl text-[var(--color-primary)] font-bold">
+    {{ value() }}
+  </span>
+
+</div>

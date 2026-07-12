@@ -1,0 +1,11 @@
+<div class="w-full">
+    <a
+      [routerLink]="item().route"
+      routerLinkActive="bg-[#201C14] text-[var(--color-primary)] border-l-2 border-[var(--color-primary)] w-full"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="flex w-full items-center justify-start gap-3 px-0 py-3 text-gray-400 transition-all duration-200
+       hover:bg-[#201C14]/50 hover:text-(--color-primary)"
+    >
+      <span class="">{{ item().label }}</span>
+    </a>
+  </div>

@@ -1,0 +1,47 @@
+<section class="flex w-full flex-col items-stretch justify-between gap-4 md:gap-6">
+
+    <!-- Search -->
+    <div class="w-full">
+        <input
+            type="text"
+            [ngModel]="search()"
+            (ngModelChange)="search.set($event); onSearch()"
+            placeholder="Search order..."
+            class="w-full text-[var(--color-primary)] rounded-lg border border-[var(--color-borders)] bg-[var(--color-surface)] px-4 py-3 outline-none focus:border-[var(--color-primary)]"/>
+    </div>
+
+    <!-- Statistics -->
+    <div class="grid grid-cols-2 gap-3 md:flex md:flex-col md:items-stretch md:gap-3">
+
+        <app-stat-card
+          title="Total"
+          [value]="statistics().total"
+          type="total">
+        </app-stat-card>
+
+        <app-stat-card
+          title="recieved"
+          [value]="statistics().preparing"
+          type="received">
+        </app-stat-card>
+
+        <app-stat-card
+          title="Preparing"
+          [value]="statistics().preparing"
+          type="preparing">
+        </app-stat-card>
+
+        <app-stat-card
+          title="Ready"
+          [value]="statistics().ready"
+          type="ready">
+        </app-stat-card>
+
+        <app-stat-card
+          title="Completed"
+          [value]="statistics().completed"
+          type="completed">
+        </app-stat-card>
+    </div>
+
+</section>

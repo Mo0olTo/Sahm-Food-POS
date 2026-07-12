@@ -1,0 +1,158 @@
+// Theming lives in shared/styles/theme.scss; this file only handles
+// the card's structural rules + status-tone accents Tailwind can't express.
+
+.order-card {
+  display: block;
+  position: relative;
+  margin-bottom: 0.75rem; // matches previous mb-3 spacing
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-borders);
+  color: var(--color-main-text);
+  transition: border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+
+  &:hover,
+  &:focus-within {
+    border-color: var(--color-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  }
+
+  // Subtle left accent that picks up the status tone.
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75rem;
+    bottom: 0.75rem;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: var(--color-primary);
+    opacity: 0.7;
+  }
+
+  &--info::before    { background: #38bdf8; } // sky-400
+  &--warn::before    { background: #f59e0b; } // amber-500
+  &--success::before { background: #22c55e; } // green-500
+  &--muted::before   { background: var(--color-sec-text); opacity: 0.5; }
+}
+
+// Header is a single-line flex row: the order id cluster
+// (number + channel chip) takes all remaining space and truncates
+// if needed; the status badge is anchored to the right at its
+// intrinsic width. The whole row never wraps, so a status change
+// from "ready" to "preparing" won't push the layout onto two lines.
+.order-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.order-card__id {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1 1 auto;
+  // If the channel label or order number can't fit, let the
+  // number ellipsize; the channel chip keeps its intrinsic width.
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.order-card__badge {
+  flex: 0 0 auto;
+}
+
+.order-card__number {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-main-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order-card__channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-borders);
+  color: var(--color-sec-text);
+  background: transparent;
+
+  &[data-channel='walk-in']  { color: var(--color-design); }
+  &[data-channel='delivery'] { color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); }
+  &[data-channel='online']   { color: var(--color-primary); border-color: rgba(219, 156, 2, 0.4); }
+}
+
+.order-card__channel-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 999px;
+  background: currentColor;
+  color: var(--color-primary);
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.order-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  color: var(--color-sec-text);
+  flex: 0 0 auto;
+
+  &[data-tone='info']    .order-card__status-dot { background: #38bdf8; }
+  &[data-tone='warn']    .order-card__status-dot { background: #f59e0b; }
+  &[data-tone='success'] .order-card__status-dot { background: #22c55e; }
+  &[data-tone='muted']   .order-card__status-dot { background: var(--color-sec-text); }
+  &[data-tone='neutral'] .order-card__status-dot { background: var(--color-primary); }
+}
+
+.order-card__status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.order-card__customer {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-sec-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.order-card__footer {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-main-text);
+  flex-wrap: wrap;
+}
+
+.order-card__time {
+  color: var(--color-sec-text);
+  font-variant-numeric: tabular-nums;
+}

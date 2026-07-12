@@ -1,0 +1,10 @@
+// Orders page just hosts the board. Keep it a full-height
+// container so the board can flex internally without breaking
+// the shell's flex column.
+
+.orders {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
