@@ -9,28 +9,56 @@ import { StatCardType } from './models/stat-card-type';
 })
 export class StatCard {
 
-  title = input.required<string>();
+  readonly title = input.required<string>();
+  readonly value = input.required<number | string>();
 
-  value = input.required<number>(); 
+  readonly hint = input('');
+  readonly suffix = input('');
+  readonly icon = input('pi-chart-bar');
 
-  type = input<StatCardType>('total');
+  readonly type = input<StatCardType>('total');
 
-  readonly accentClass = computed(() => {
+  readonly iconClass = computed(() => {
     switch (this.type()) {
       case 'received':
-        return 'border-l-yellow-700';
+        return 'text-yellow-400';
 
       case 'preparing':
-        return 'border-l-blue-500';
+        return 'text-blue-400';
 
       case 'ready':
-        return 'border-l-green-500';
+        return 'text-emerald-400';
 
       case 'completed':
-        return 'border-l-gray-500';
+        return 'text-gray-400';
+
+      case 'delivered':
+        return 'text-indigo-700';
 
       default:
-        return 'border-l-[var(--color-primary)]';
+        return 'text-[var(--color-primary)]';
+    }
+  });
+
+  readonly glowClass = computed(() => {
+    switch (this.type()) {
+      case 'received':
+        return 'bg-yellow-500';
+
+      case 'preparing':
+        return 'bg-blue-500';
+
+      case 'ready':
+        return 'bg-emerald-500';
+
+      case 'delivered':
+         return 'bg-indigo-700';
+
+      case 'completed':
+        return 'bg-gray-500';
+
+      default:
+        return 'bg-[var(--color-primary)]';
     }
   });
 

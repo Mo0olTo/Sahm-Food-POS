@@ -1,59 +1,52 @@
-<section class="grid grid-cols-2 gap-4">
+<section
+  aria-label="Kitchen KPI summary"
+  class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4"
+>
 
+  @for (kpi of kpis(); track kpi.key) {
 
-    <div class="rounded-xl border border-[var(--color-border)] bg-white p-4 shadow-sm">
-  
-      <p class="text-sm text-[var(--color-sec-text)]">
-        Active Orders
+    <article
+      class="relative overflow-hidden rounded-xl border border-[var(--color-borders)] bg-[var(--color-section-bg)] p-4 transition-all duration-200 hover:border-[var(--color-primary)]"
+    >
+
+      <div
+        class="pointer-events-none absolute -right-4 -top-4 h-16 w-16 rounded-full blur-2xl opacity-60"
+        [class]="kpi.glow"
+        aria-hidden="true"
+      ></div>
+
+      <div class="flex items-center justify-between gap-2">
+
+        <span class="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-sec-text)]">
+          {{ kpi.label }}
+        </span>
+
+        <i class="pi {{ kpi.icon }} text-sm" [class]="kpi.accent" aria-hidden="true"></i>
+
+      </div>
+
+      <div class="mt-3 flex items-baseline gap-1.5">
+
+        <span class="text-3xl font-extrabold tabular-nums text-[var(--color-primary)]">
+          {{ kpi.value }}
+        </span>
+
+        @if (kpi.suffix) {
+
+          <span class="text-sm font-medium text-[var(--color-sec-text)]">
+            {{ kpi.suffix }}
+          </span>
+
+        }
+
+      </div>
+
+      <p class="mt-2 text-[11px] text-[var(--color-sec-text)]">
+        {{ kpi.hint }}
       </p>
-  
-      <h3 class="mt-2 text-2xl font-bold">
-        {{ kitchen().activeOrders }}
-      </h3>
-  
-    </div>
-  
-  
-  
-    <div class="rounded-xl border border-[var(--color-border)] bg-white p-4 shadow-sm">
-  
-      <p class="text-sm text-[var(--color-sec-text)]">
-        Estimated Wait
-      </p>
-  
-      <h3 class="mt-2 text-2xl font-bold">
-        {{ kitchen().estimatedWait }} min
-      </h3>
-  
-    </div>
-  
-  
-  
-    <div class="rounded-xl border border-[var(--color-border)] bg-white p-4 shadow-sm">
-  
-      <p class="text-sm text-[var(--color-sec-text)]">
-        Kitchen Level
-      </p>
-  
-      <h3 class="mt-2 text-xl font-bold capitalize">
-        {{ kitchen().level }}
-      </h3>
-  
-    </div>
-  
-  
-  
-    <div class="rounded-xl border border-[var(--color-border)] bg-white p-4 shadow-sm">
-  
-      <p class="text-sm text-[var(--color-sec-text)]">
-        Active Alerts
-      </p>
-  
-      <h3 class="mt-2 text-2xl font-bold">
-        {{ kitchen().alerts?.length ?? 0 }}
-      </h3>
-  
-    </div>
-  
-  
-  </section>
+
+    </article>
+
+  }
+
+</section>

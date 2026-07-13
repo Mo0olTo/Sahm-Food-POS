@@ -1,1 +1,78 @@
-<p>kitchen-alerts works!</p>
+<section
+  aria-label="Kitchen alerts"
+  class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-borders)] bg-[var(--color-section-bg)]"
+>
+
+  <header
+    class="flex items-center justify-between gap-2 border-b border-[var(--color-borders)] px-4 py-3"
+  >
+    <div class="flex items-center gap-2">
+      <i class="pi pi-bell text-base text-[var(--color-primary)]" aria-hidden="true"></i>
+      <h2 class="text-base font-semibold text-[var(--color-primary)]">
+        Live Alerts
+      </h2>
+    </div>
+
+    <span
+      class="rounded-full border border-[var(--color-borders)] px-2 py-0.5 text-xs tabular-nums text-[var(--color-primary)]"
+      aria-label="Alert count"
+    >
+      {{ alerts().length }}
+    </span>
+  </header>
+
+  <div class="flex-1 overflow-y-auto p-3" role="list">
+
+    @if (hasAlerts()) {
+
+      @for (alert of views(); track $index) {
+
+        <article
+          role="listitem"
+          class="relative mb-3 flex gap-3 overflow-hidden rounded-lg border px-3 py-3 last:mb-0"
+          [class]="alert.container"
+        >
+          <span
+            class="absolute inset-y-0 left-0 w-1"
+            [class]="alert.bar"
+            aria-hidden="true"
+          ></span>
+
+          <div
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+            [class]="alert.iconBg"
+          >
+            <i class="pi {{ alert.icon }} text-base" [class]="alert.iconColor" aria-hidden="true"></i>
+          </div>
+
+          <div class="min-w-0 flex-1">
+            <p class="truncate text-sm font-semibold text-[var(--color-main-text)]">
+              {{ alert.title }}
+            </p>
+            <p class="mt-0.5 text-xs leading-relaxed text-[var(--color-sec-text)]">
+              {{ alert.message }}
+            </p>
+          </div>
+        </article>
+
+      }
+
+    } @else {
+
+      <div class="flex h-full flex-col items-center justify-center gap-2 py-10 text-center">
+        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10">
+          <i class="pi pi-check-circle text-2xl text-emerald-400" aria-hidden="true"></i>
+        </div>
+        <p class="text-sm font-semibold text-[var(--color-main-text)]">
+          All clear
+        </p>
+        <p class="text-xs text-[var(--color-sec-text)]">
+          No active alerts in the kitchen.
+        </p>
+      </div>
+
+    }
+
+  </div>
+
+</section>

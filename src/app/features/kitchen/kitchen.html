@@ -1,30 +1,102 @@
-<section>
+<section class="flex h-full min-w-0 flex-col gap-5 overflow-y-auto p-4 sm:p-6">
 
-  @if (loading()) {
+  <!-- Page header -->
+  <header
+    class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+  >
 
-    <app-skeleton
-    [rows]="8"
-    ></app-skeleton>
+    <div class="min-w-0">
 
-} @else if (error()) {
+      <div class="flex items-center gap-2">
 
-    <app-error-state
-        (retry)="reload()">
-    </app-error-state>
+        <i class="pi pi-fire text-xl text-[var(--color-primary)]" aria-hidden="true"></i>
 
-} @else {
-  <div class="space-y-5">
+        <h1 class="truncate text-2xl font-bold tracking-tight text-[var(--color-main-text)]">
+          Kitchen Operations
+        </h1>
 
-    <app-workload-gauge
-      [kitchen]="kitchen()">
-    </app-workload-gauge>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-400">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+          LIVE
+        </span>
 
+      </div>
 
-    <app-workload-summary
-      [kitchen]="kitchen()">
-    </app-workload-summary>
+      <p class="mt-1 text-sm text-[var(--color-sec-text)]">
+        Real-time workload, active orders and operational alerts.
+      </p>
 
-  </div>
+    </div>
 
-}
+    <div class="flex items-center gap-2">
+
+      <button
+        type="button"
+        (click)="reload()"
+        [disabled]="loading()"
+        class="inline-flex items-center gap-2 rounded-lg border border-[var(--color-borders)] bg-[var(--color-section-bg)] px-3 py-2 text-sm font-semibold text-[var(--color-main-text)] transition hover:border-[var(--color-primary)] disabled:opacity-50"
+        aria-label="Refresh kitchen status"
+      >
+
+        <i
+          class="pi pi-refresh text-sm"
+          [class.animate-spin]="loading()"
+          aria-hidden="true"
+        ></i>
+
+        Refresh
+
+      </button>
+
+    </div>
+
+  </header>
+
+  @if (loading() ) {
+
+    <app-skeleton [rows]="6"></app-skeleton>
+
+  } @else if (error()) {
+
+    <app-error-state (retry)="reload()"></app-error-state>
+
+  } @else {
+
+    <!-- KPI grid -->
+    <app-workload-summary [kitchen]="kitchen()"></app-workload-summary>
+
+    <!-- Hero gauge + main body -->
+    <div class="flex flex-col gap-5">
+
+      <!-- Gauge + active orders -->
+      <div class="space-y-5 lg:col-span-8">
+
+        <app-workload-gauge [kitchen]="kitchen()"></app-workload-gauge>
+
+        
+
+      </div>
+    <div>
+      <app-kitchen-active-orders [orders]="activeOrders()"></app-kitchen-active-orders>
+    </div>
+      <!-- Alerts side panel -->
+      <div class="lg:col-span-4">
+
+        <app-kitchen-alerts [alerts]="alerts()"></app-kitchen-alerts>
+
+      </div>
+
+    </div>
+
+    @if (activeOrders().length === 0 && alerts().length === 0) {
+
+      <app-empty-state
+        title="Kitchen is clear"
+        description="No active orders or alerts. Enjoy the calm.">
+      </app-empty-state>
+
+    }
+
+  }
+
 </section>

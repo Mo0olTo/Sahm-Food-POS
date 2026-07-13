@@ -1,11 +1,13 @@
-<div class="w-full">
-    <a
-      [routerLink]="item().route"
-      routerLinkActive="bg-[#201C14] text-[var(--color-primary)] border-l-2 border-[var(--color-primary)] w-full"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="flex w-full items-center justify-start gap-3 px-0 py-3 text-gray-400 transition-all duration-200
-       hover:bg-[#201C14]/50 hover:text-(--color-primary)"
-    >
-      <span class="">{{ item().label }}</span>
-    </a>
-  </div>
+<a
+  [routerLink]="item().route"
+  routerLinkActive="bg-[#201C14] text-[var(--color-primary)] border-l-2 border-[var(--color-primary)]"
+  [routerLinkActiveOptions]="{ exact: true }"
+  [attr.aria-label]="'Navigate to ' + item().label"
+  class="sidebar__link flex w-full items-center gap-3 rounded-lg
+         border-l-2 border-transparent
+         px-4 py-2.5 text-sm text-gray-400 transition-all duration-200
+         hover:bg-[#201C14]/50 hover:text-[var(--color-primary)]"
+>
+  <i class="pi pi-{{ item().icon }} text-lg shrink-0" aria-hidden="true"></i>
+  <span class="truncate">{{ item().label }}</span>
+</a>

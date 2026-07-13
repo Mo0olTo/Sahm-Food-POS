@@ -1,41 +1,131 @@
-<section class="rounded-xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
+<section
+  aria-label="Kitchen workload"
+  class="relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-borders)] bg-[var(--color-section-bg)]"
+>
 
-    <div class="mb-4 flex items-center justify-between">
-  
-      <h3 class="text-base font-semibold text-[var(--color-text)]">
+  <header
+    class="flex items-center justify-between gap-2 border-b border-[var(--color-borders)] px-4 py-3"
+  >
+
+    <div class="flex items-center gap-2">
+
+      <i class="pi pi-fire text-base text-[var(--color-primary)]" aria-hidden="true"></i>
+
+      <h2 class="text-base font-semibold text-[var(--color-primary)]">
         Kitchen Load
-      </h3>
-  
-      <span class="text-lg font-bold text-[var(--color-primary)]">
-        {{ kitchen().percentage }}%
-      </span>
-  
+      </h2>
+
     </div>
-  
-    <div class="h-3 overflow-hidden rounded-full bg-gray-200">
-  
+
+    <span
+      class="rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider"
+      [class]="theme().chip + ' ' + theme().chipText"
+    >
+      {{ levelLabel() }}
+    </span>
+
+  </header>
+
+  <div class="flex flex-1 flex-col items-center justify-center gap-5 p-6 sm:flex-row sm:gap-8">
+
+    <!-- Circular gauge -->
+    <div class="relative flex h-44 w-44 items-center justify-center shrink-0 sm:h-52 sm:w-52">
+
       <div
-        class="h-full rounded-full transition-all duration-500"
-        [style.width.%]="kitchen().percentage"
-        [class]="barColor()">
+        class="absolute inset-0 rounded-full blur-2xl"
+        [class]="theme().glow"
+        aria-hidden="true"
+      ></div>
+
+      <svg
+        class="relative h-full w-full -rotate-90"
+        viewBox="0 0 100 100"
+        aria-hidden="true"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          r="40"
+          fill="none"
+          stroke-width="10"
+          class="transition-colors duration-500"
+          [class]="theme().track"
+        ></circle>
+
+        <circle
+          cx="50"
+          cy="50"
+          r="40"
+          fill="none"
+          stroke-width="10"
+          stroke-linecap="round"
+          class="transition-all duration-700"
+          [class]="theme().ring"
+          [attr.stroke-dasharray]="dashArray"
+          [attr.stroke-dashoffset]="dashOffset()"
+        ></circle>
+      </svg>
+
+      <div class="absolute inset-0 flex flex-col items-center justify-center">
+        <span
+          class="text-4xl font-extrabold tabular-nums transition-colors duration-500 sm:text-5xl"
+          [class]="theme().text"
+        >
+          {{ kitchen().percentage }}%
+        </span>
+        <span class="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--color-sec-text)]">
+          Workload
+        </span>
       </div>
-  
+
     </div>
-  
-    <div class="mt-4 flex items-center justify-between">
-  
-      <span class="text-sm text-[var(--color-sec-text)]">
-        Current Workload
-      </span>
-  
-      <span
-        class="rounded-full px-3 py-1 text-xs font-semibold capitalize"
-        [class]="badgeColor()">
-  
-        {{ kitchen().level }}
-  
-      </span>
-  
-    </div>
-  
-  </section>
+
+    <!-- Quick metrics -->
+    <dl class="grid w-full grid-cols-2 gap-3 sm:w-auto sm:gap-4">
+
+      <div class="flex flex-col rounded-lg border border-[var(--color-borders)] bg-[var(--color-bg)] px-4 py-3 min-w-30">
+
+        <dt class="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-sec-text)]">
+          Active
+        </dt>
+
+        <dd class="mt-1 text-2xl font-bold tabular-nums text-[var(--color-main-text)]">
+          {{ kitchen().activeOrders }}
+        </dd>
+
+      </div>
+
+      <div class="flex flex-col rounded-lg border border-[var(--color-borders)] bg-[var(--color-bg)] px-4 py-3 min-w-30">
+
+        <dt class="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-sec-text)]">
+          Wait
+        </dt>
+
+        <dd class="mt-1 text-2xl font-bold tabular-nums text-[var(--color-main-text)]">
+          {{ kitchen().estimatedWait }}<span class="ml-1 text-sm font-medium text-[var(--color-sec-text)]">min</span>
+        </dd>
+
+      </div>
+
+      <div class="col-span-2 flex flex-col rounded-lg border border-[var(--color-borders)] bg-[var(--color-bg)] px-4 py-3">
+
+        <dt class="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-sec-text)]">
+          Status
+        </dt>
+
+        <dd class="mt-1 flex items-center gap-2 text-sm font-semibold capitalize" [class]="theme().text">
+          <span class="flex h-2 w-2 rounded-full"
+                [class.bg-emerald-500]="kitchen().level === 'low'"
+                [class.bg-amber-500]="kitchen().level === 'medium'"
+                [class.bg-orange-500]="kitchen().level === 'high'"
+                [class.bg-red-500]="kitchen().level === 'critical'"></span>
+          {{ kitchen().level }} load
+        </dd>
+
+      </div>
+
+    </dl>
+
+  </div>
+
+</section>

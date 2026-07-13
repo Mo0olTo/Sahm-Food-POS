@@ -1,0 +1,41 @@
+<nav
+  aria-label="Mobile primary navigation"
+  class="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-borders)]
+         bg-[var(--color-section-bg)]/95 backdrop-blur md:hidden
+         pb-[env(safe-area-inset-bottom)]"
+>
+  <ul class="grid grid-cols-3">
+    @for (item of items; track item.route) {
+      @if (item.label === 'New Order') {
+        <li class="flex items-stretch justify-stretch">
+          <button
+            type="button"
+            (click)="openNewOrder()"
+            aria-label="Create a new order"
+            class="flex w-full flex-col items-center justify-center gap-1
+                   bg-[var(--color-primary)] text-white
+                   py-2 transition active:opacity-80"
+          >
+            <i class="pi {{ item.icon }} text-xl" aria-hidden="true"></i>
+            <span class="text-xs font-semibold">{{ item.label }}</span>
+          </button>
+        </li>
+      } @else {
+        <li class="flex items-stretch justify-stretch">
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="text-[var(--color-primary)]"
+            [routerLinkActiveOptions]="{ exact: true }"
+            [attr.aria-label]="'Navigate to ' + item.label"
+            class="flex w-full flex-col items-center justify-center gap-1
+                   py-2 text-gray-400 transition active:opacity-80
+                   hover:text-[var(--color-primary)]"
+          >
+            <i class="pi {{ item.icon }} text-xl" aria-hidden="true"></i>
+            <span class="text-xs font-medium">{{ item.label }}</span>
+          </a>
+        </li>
+      }
+    }
+  </ul>
+</nav>
