@@ -4,6 +4,8 @@ import { finalize } from 'rxjs';
 import { OrdersService } from '../data/orders-service';
 import { Order } from '../models/order.model';
 import { OrderStatus } from '../models/order-status.type';
+import { KitchenLevel } from '../../kitchen/models/kitchen-level.type';
+import { CreateOrder } from '../models/create.order';
 
 @Injectable({
   providedIn: 'root',
@@ -100,12 +102,29 @@ export class OrdersStore {
 
       preparing: orders.filter(o => o.status === 'preparing').length,
 
+      delivered: orders.filter(o => o.status === 'delivered').length,
+
       ready: orders.filter(o => o.status === 'ready').length,
 
       completed: orders.filter(o => o.status === 'completed').length,
 
     };
 
+  }); 
+
+
+  readonly kitchenOrdersCount = computed(() => {
+
+    const kitchenOrders = this._orders().filter(order =>
+      order.status === 'received' ||
+      order.status === 'preparing' ||
+      order.status === 'ready'
+    );
+  
+    console.log(kitchenOrders);
+  
+    return kitchenOrders.length;
+    
   });
 
   // ==========================
@@ -118,6 +137,90 @@ export class OrdersStore {
 
   setSearch(value: string): void {
     this.search.set(value);
+  } 
+
+  updatePriorityByKitchen(level: KitchenLevel):void {
+  
+    this._orders.update(orders =>
+  
+      orders.map(order => {
+  
+        if (order.status === 'completed') {
+  
+          return {
+            ...order,
+            priority: 'normal'
+          };
+  
+        }
+  
+  
+        switch(level) {
+  
+  
+          case 'low':
+  
+            return {
+              ...order,
+              priority: 'normal'
+            };
+  
+  
+          case 'medium':
+  
+            if (
+              order.status === 'preparing' ||
+              order.status === 'ready'
+            ) {
+  
+              return {
+                ...order,
+                priority: 'high'
+              };
+  
+            }
+  
+            return order;
+  
+  
+  
+          case 'high': 
+            if (
+              order.status === 'received' ||
+              order.status === 'preparing'
+            ) {
+  
+              return {
+                ...order,
+                priority: 'high'
+              };
+  
+            }
+  
+            return order;
+  
+  
+  
+          case 'critical': if (
+            order.status === 'received' ||
+            order.status === 'preparing' ||
+            order.status === 'ready'
+          ) {
+        
+            return {
+              ...order,
+              priority: 'urgent'
+            };
+        
+          }
+        
+            return order;
+        }
+  
+      })
+  
+    );
+  
   }
 
   // ==========================
@@ -154,7 +257,7 @@ export class OrdersStore {
 
   }
 
-  createOrder(order: Order): void {
+  createOrder(order: CreateOrder): void {
 
     this._loading.set(true);
     this._error.set(null);
@@ -218,21 +321,51 @@ export class OrdersStore {
   
   }
 
-  updateOrderStatus(id:number,status: OrderStatus): void {
+  updateOrderStatus(id: number, status: OrderStatus): void {
+
+    const currentOrder = this._orders()
+      .find(o => o.id === id);
   
-    const order = this._orders().find(o => o.id === id);
+    if (!currentOrder) return;
   
-    if (!order) return;
   
-    const updatedOrder: Order = {
-      ...order,
-      status,
-    };
+    // update UI immediately
+    this._orders.update(orders =>
+      orders.map(order =>
+        order.id === id
+          ? {
+              ...order,
+              status
+            }
+          : order
+      )
+    );
   
-    this.updateOrder(id, updatedOrder);
+  
+    // sync with API
+    this.ordersService
+      .updateOrder(id, {
+        ...currentOrder,
+        status
+      })
+      .subscribe({
+  
+        error: () => {
+  
+          // rollback if failed
+          this._orders.update(orders =>
+            orders.map(order =>
+              order.id === id
+                ? currentOrder
+                : order
+            )
+          );
+  
+        }
+  
+      });
   
   }
-
 
   
   deleteOrder(id:number): void {

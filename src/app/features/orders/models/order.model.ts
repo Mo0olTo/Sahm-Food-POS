@@ -1,5 +1,6 @@
 import { OrderChannel } from './order-channel.type';
 import { OrderItem } from './order-item';
+import { OrderPriority } from './order-poriorty';
 import { OrderStatus } from './order-status.type';
 
 export interface Order {
@@ -18,6 +19,8 @@ export interface Order {
 
   items: OrderItem[];
 
-  createdAt: string;
+  createdAt: string; 
+
+  priority : OrderPriority;
 
 }

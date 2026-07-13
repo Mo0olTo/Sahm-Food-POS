@@ -43,22 +43,6 @@ export class LiveOrders {
   }
 
 
-  // updates(): Observable<number> {
-  //   return interval(15000);
-  // }
-
-  // simulateUpdate(order: Order): Order {
-
-  //   return {
-
-  //     ...order,
-
-  //     status: this.nextStatus(order.status),
-
-  //   };
-
-  // }
-
   private nextStatus(status: Order['status']): Order['status'] {
 
     switch (status) {

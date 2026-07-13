@@ -12,4 +12,9 @@ export const API_ROUTES = {
         updateStatus: (id: number) => `${API_ENDPOINTS.orders}/${id}`,
       },
 
+      kitchen: {
+        get: API_ENDPOINTS.kitchen,
+        update: (id: number) => `${API_ENDPOINTS.kitchen}/${id}`,
+      },
+
 };

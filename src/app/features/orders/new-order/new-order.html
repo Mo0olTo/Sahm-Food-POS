@@ -1,0 +1,190 @@
+
+
+
+    @if (open()) {
+
+        <div class="fixed inset-0 z-50 flex">
+        
+            <div
+                class="flex-1 bg-black/40 backdrop-blur-sm"
+                (click)="onClose()">
+            </div>
+        
+            <aside class="flex h-full w-[500px] flex-col bg-white shadow-2xl">
+        
+                <div class="flex items-center justify-between border-b border-gray-200 px-6 py-5">
+        
+                    <h2 class="text-xl font-bold">
+                        New Order
+                    </h2>
+        
+                    <button
+                        type="button"
+                        (click)="onClose()"
+                        class="rounded-lg p-2 transition hover:bg-gray-100">
+        
+                        ✕
+        
+                    </button>
+        
+                </div>
+        
+                <form
+                        [formGroup]="form"
+                        (ngSubmit)="submit()"
+                        class="flex h-full flex-col">
+                    
+                        <div class="flex-1 space-y-6 overflow-y-auto p-6">
+                    
+                        <div>
+                    
+                            <label class="mb-2 block text-sm font-medium text-gray-700">
+                            Customer Name
+                            </label>
+                    
+                            <input
+                            type="text"
+                            formControlName="customerName"
+                            class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[var(--color-primary)]"> 
+
+                            @if (form.controls.customerName.invalid &&form.controls.customerName.touched) {
+                            
+                            <p class="mt-2 text-sm text-red-500">
+                                Customer name is required.
+                            </p>
+                            
+                            }
+                    
+                        </div>
+                    
+                        <div>
+                    
+                            <label class="mb-2 block text-sm font-medium text-gray-700">
+                            Order Channel
+                            </label>
+                    
+                            <select
+                            formControlName="channel"
+                            class="w-full rounded-xl border border-gray-300 px-4 py-3">
+                    
+                            <option value="walk-in">
+                                Walk-in
+                            </option>
+                    
+                            <option value="delivery">
+                                Delivery
+                            </option>
+                    
+                            <option value="online">
+                                Online
+                            </option>
+                    
+                            </select>
+                    
+                        </div> 
+
+                        <div class="space-y-4">
+
+                            <div class="flex items-center justify-between">
+                        
+                                <h3 class="font-semibold">
+                        
+                                    Order Items
+                        
+                                </h3>
+                        
+                                <button
+                                    type="button"
+                                    (click)="addItem()"
+                                    class="rounded-lg bg-gray-100 px-3 py-2 text-sm">
+                        
+                                    + Add Item
+                        
+                                </button>
+                        
+                            </div>
+                        
+                            @for (item of items(); track $index) {
+                        
+                            <div class="grid grid-cols-12 gap-3">
+                        
+                                <input
+                                    [value]="item.name"
+                                    (input)="updateItemName($index, $any($event.target).value)"
+                                    placeholder="Item"
+                                    class="col-span-8 rounded-xl border border-gray-300 px-4 py-3">
+                        
+                                <input
+                                    type="number"
+                                    [value]="item.quantity"
+                                    (input)="updateQuantity($index, +$any($event.target).value)"
+                                    class="col-span-2 rounded-xl border border-gray-300 px-4 py-3">
+                        
+                                <button
+                                    type="button"
+                                    (click)="removeItem($index)"
+                                    class="col-span-2 rounded-xl bg-red-50 text-red-600">
+                        
+                                    ✕
+                        
+                                </button>
+                        
+                            </div>
+                        
+                            }
+                        
+                        </div>
+                    
+                        <div>
+                    
+                            <label class="mb-2 block text-sm font-medium text-gray-700">
+                            Total
+                            </label>
+                    
+                            <input
+                            type="number"
+                            formControlName="total"
+                            class="w-full rounded-xl border border-gray-300 px-4 py-3"> 
+                                @if (
+                                    form.controls.total.invalid &&
+                                    form.controls.total.touched
+                                  ) {
+                                  
+                                  <p class="mt-2 text-sm text-red-500">
+                                    Total is required.
+                                  </p>
+                                  
+                                  }
+                    
+                        </div>
+                    
+                        </div>
+                    
+                        <div class="flex justify-end gap-3 border-t border-gray-200 p-6">
+                    
+                        <button
+                            type="button"
+                            (click)="onClose()"
+                            class="rounded-xl border border-gray-300 px-5 py-3">
+                    
+                            Cancel
+                    
+                        </button>
+                    
+                        <button
+                            type="submit"
+                            class="rounded-xl bg-[var(--color-primary)] px-5 py-3 font-medium text-white">
+                    
+                            Create Order
+                    
+                        </button>
+                    
+                        </div>
+              
+              </form>
+        
+            </aside>
+        
+        </div>
+        
+        }

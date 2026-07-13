@@ -21,7 +21,7 @@
 
         <app-stat-card
           title="recieved"
-          [value]="statistics().preparing"
+          [value]="statistics().recieved"
           type="received">
         </app-stat-card>
 
@@ -35,6 +35,11 @@
           title="Ready"
           [value]="statistics().ready"
           type="ready">
+        </app-stat-card>
+        <app-stat-card
+          title="Delivered"
+          [value]="statistics().delivered"
+          type="delivered">
         </app-stat-card>
 
         <app-stat-card

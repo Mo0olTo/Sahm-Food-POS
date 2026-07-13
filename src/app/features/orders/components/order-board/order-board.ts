@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { OrderColumn } from "../order-column/order-column";
 import { OrdersFacade } from '../../facade/orders.facade';
 import { OrderDetails } from "../../order-details/order-details";
@@ -18,6 +18,8 @@ export class OrderBoard implements OnInit{
   readonly selectedOrder = this.facade.selectedOrder;
   readonly loading = this.facade.loading;
   readonly error = this.facade.error;
+  readonly detailsOpen = signal(false);
+
 
   ngOnInit() {
 
@@ -31,5 +33,12 @@ export class OrderBoard implements OnInit{
 
  onOrderSelected(orderId: number): void {
   this.facade.selectOrder(orderId);
+  this.detailsOpen.set(true);
+} 
+
+closeDetails(): void {
+
+  this.detailsOpen.set(false);
+
 }
 }
