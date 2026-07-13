@@ -1,10 +1,11 @@
-import { DestroyRef, Injectable, inject } from '@angular/core';
+import { DestroyRef, Injectable, inject, signal } from '@angular/core';
 
 import { KitchenStore } from '../store/kitchen.store';
 import { KitchenLoad } from '../models/kitchen-load.model';
 import { LiveKitchenService } from '../data/live-kitchen.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { OrdersStore } from '../../orders/store/orders.store';
+import { KitchenAlert } from '../models/kitchen-alert.model';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +27,9 @@ export class KitchenFacade {
   readonly workloadColor = this.store.workloadColor;
   readonly isOverloaded = this.store.isOverloaded;
   readonly alertsCount = this.store.alertsCount; 
+  readonly alerts = signal<KitchenAlert[]>([]); 
 
+  
   // ==========================
   // Actions
   // ==========================

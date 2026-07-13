@@ -1,6 +1,16 @@
-import { ChangeDetectionStrategy,Component, computed, input } from '@angular/core';
-import { KitchenLoad } from '../../models/kitchen-load.model';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
+import { KitchenLoad } from '../../models/kitchen-load.model';
+import { KitchenLevel } from '../../models/kitchen-level.type';
+
+interface LevelTheme {
+  ring: string;
+  track: string;
+  text: string;
+  chip: string;
+  chipText: string;
+  glow: string;
+}
 
 @Component({
   selector: 'app-workload-gauge',
@@ -11,53 +21,74 @@ import { KitchenLoad } from '../../models/kitchen-load.model';
 })
 export class WorkloadGauge {
 
-
   kitchen = input.required<KitchenLoad>();
 
-  readonly barColor = computed(() => {
-
-    switch (this.kitchen().level) {
-
-      case 'low':
-        return 'bg-green-500';
-
-      case 'medium':
-        return 'bg-yellow-500';
-
-      case 'high':
-        return 'bg-orange-500';
-
-      case 'critical':
-        return 'bg-red-500';
-
-      default:
-        return 'bg-gray-400';
-
-    }
-
+  // 0..100 -> 0..360
+  readonly rotation = computed(() => {
+    const pct = Math.max(0, Math.min(100, this.kitchen().percentage));
+    return (pct / 100) * 360;
   });
 
-  readonly badgeColor = computed(() => {
+  readonly theme = computed<LevelTheme>(() => {
 
-    switch (this.kitchen().level) {
+    const level: KitchenLevel = this.kitchen().level;
+
+    switch (level) {
 
       case 'low':
-        return 'bg-green-100 text-green-700';
+        return {
+          ring: 'stroke-emerald-500',
+          track: 'stroke-emerald-500/15',
+          text: 'text-emerald-400',
+          chip: 'bg-emerald-500/15',
+          chipText: 'text-emerald-400',
+          glow: 'shadow-emerald-500/20',
+        };
 
       case 'medium':
-        return 'bg-yellow-100 text-yellow-700';
+        return {
+          ring: 'stroke-amber-500',
+          track: 'stroke-amber-500/15',
+          text: 'text-amber-400',
+          chip: 'bg-amber-500/15',
+          chipText: 'text-amber-400',
+          glow: 'shadow-amber-500/20',
+        };
 
       case 'high':
-        return 'bg-orange-100 text-orange-700';
+        return {
+          ring: 'stroke-orange-500',
+          track: 'stroke-orange-500/15',
+          text: 'text-orange-400',
+          chip: 'bg-orange-500/15',
+          chipText: 'text-orange-400',
+          glow: 'shadow-orange-500/20',
+        };
 
       case 'critical':
-        return 'bg-red-100 text-red-700';
-
-      default:
-        return 'bg-gray-100 text-gray-700';
-
+        return {
+          ring: 'stroke-red-500',
+          track: 'stroke-red-500/15',
+          text: 'text-red-400',
+          chip: 'bg-red-500/15',
+          chipText: 'text-red-400',
+          glow: 'shadow-red-500/30',
+        };
     }
-
   });
 
+  readonly dashArray = 251.327;
+  readonly dashOffset = computed(() => {
+    return this.dashArray - (this.dashArray * Math.max(0, Math.min(100, this.kitchen().percentage))) / 100;
+  });
+
+  readonly levelLabel = computed(() => {
+    const lvl: KitchenLevel = this.kitchen().level;
+    switch (lvl) {
+      case 'low': return 'Calm';
+      case 'medium': return 'Busy';
+      case 'high': return 'Strained';
+      case 'critical': return 'Overloaded';
+    }
+  });
 }

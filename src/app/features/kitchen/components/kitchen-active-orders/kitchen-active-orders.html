@@ -1,0 +1,96 @@
+<section
+  aria-label="Active kitchen orders"
+  class="flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-borders)] bg-[var(--color-section-bg)]"
+>
+
+  <header
+    class="flex items-center justify-between gap-2 border-b border-[var(--color-borders)] px-4 py-3"
+  >
+    <div class="flex items-center gap-2">
+      <i class="pi pi-list-check text-base text-[var(--color-primary)]" aria-hidden="true"></i>
+      <h2 class="text-base font-semibold text-[var(--color-primary)]">
+        Active Orders
+      </h2>
+    </div>
+
+    <span
+      class="rounded-full border border-[var(--color-borders)] px-2 py-0.5 text-xs tabular-nums text-[var(--color-primary)]"
+      aria-label="Total active orders"
+    >
+      {{ totalCount() }}
+    </span>
+  </header>
+
+  @if (totalCount() === 0) {
+
+    <div class="flex flex-1 flex-col items-center justify-center gap-2 py-10 text-center">
+      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10">
+        <i class="pi pi-check-circle text-2xl text-emerald-400" aria-hidden="true"></i>
+      </div>
+      <p class="text-sm font-semibold text-[var(--color-main-text)]">
+        Kitchen queue empty
+      </p>
+      <p class="text-xs text-[var(--color-sec-text)]">
+        No orders are waiting to be prepared.
+      </p>
+    </div>
+
+  } @else {
+
+    <div
+      class="grid flex-1 grid-cols-1 gap-4 overflow-y-auto p-3 md:grid-cols-3"
+      role="list"
+    >
+
+      @for (group of groups(); track group.key) {
+
+        <div
+          role="listitem"
+          class="flex min-h-0 flex-col overflow-hidden rounded-lg border border-[var(--color-borders)] bg-[var(--color-bg)]"
+        >
+
+          <div
+            class="flex items-center justify-between border-b border-[var(--color-borders)] px-3 py-2"
+          >
+            <span class="text-xs font-semibold uppercase tracking-wider text-[var(--color-main-text)]">
+              {{ group.label }}
+            </span>
+
+            <span
+              class="rounded-full px-2 py-0.5 text-[11px] font-bold tabular-nums"
+              [class]="group.tone"
+              [attr.aria-label]="group.label + ' count'"
+            >
+              {{ group.count }}
+            </span>
+          </div>
+
+          <div class="flex flex-1 flex-col gap-2 overflow-y-auto p-2">
+
+            @if (group.orders.length === 0) {
+
+              <p class="py-4 text-center text-[11px] text-[var(--color-sec-text)]">
+                No orders
+              </p>
+
+            } @else {
+
+              @for (order of group.orders; track order.id) {
+
+                <app-order-card [order]="order"></app-order-card>
+
+              }
+
+            }
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+</section>
