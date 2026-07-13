@@ -2,10 +2,11 @@ import { Component, effect, inject } from '@angular/core';
 import { KitchenFacade } from '../../features/kitchen/facade/kitchen.facade';
 import { KitchenStatus } from "../../shared/ui/kitchen-status/kitchen-status";
 import { OrdersFacade } from '../../features/orders/facade/orders.facade';
+import { KitchenRecommendation } from "../../features/kitchen/components/kitchen-recommendation/kitchen-recommendation";
 
 @Component({
   selector: 'app-header',
-  imports: [KitchenStatus],
+  imports: [KitchenStatus, KitchenRecommendation],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

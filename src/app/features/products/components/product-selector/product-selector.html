@@ -1,0 +1,23 @@
+<section class="flex flex-col gap-4">
+
+
+    <header>
+    
+    <h2 class="text-lg font-bold text-[var(--color-main-text)]">
+      Products
+    </h2>
+    
+    <p class="text-sm text-[var(--color-sec-text)]">
+      Select items to add to order
+    </p>
+    
+    </header>
+    
+    
+    <app-product-grid
+        [products]="products()"
+        (productSelected)="selectProduct($event)"
+    ></app-product-grid>
+
+    
+    </section>

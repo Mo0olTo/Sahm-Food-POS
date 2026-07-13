@@ -16,16 +16,23 @@ type ChannelTone = 'walk-in' | 'delivery' | 'online';
   styleUrl: './order-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrderCard {
+export class OrderCard { 
+
+  
+
   order = input.required<Order>(); 
 
   selected = output<number>();
+  delete = output<number>();
 
   onSelect() {
     this.selected.emit(this.order().id);
   } 
 
-
+  deleteOrder(event: MouseEvent): void {
+    event.stopPropagation(); // حتى لا يتم تنفيذ onSelect()
+    this.delete.emit(this.order().id);
+  }
   // Map order lifecycle to a tone used by the status pill (and accent border).
   readonly statusTone = computed<StatusTone>(() => {
     const status = this.order().status;
@@ -66,8 +73,8 @@ export class OrderCard {
 } 
 
 const STATUS_TONE_MAP: Readonly<Record<OrderStatus, StatusTone>> = {
-  received: 'info',
-  preparing: 'warn',
+  received: 'warn',
+  preparing: 'info',
   ready: 'success',
   delivered: 'muted',
   completed: 'muted',

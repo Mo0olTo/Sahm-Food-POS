@@ -8,10 +8,11 @@ import { OrdersFacade } from '../orders/facade/orders.facade';
 import { KitchenActiveOrders } from "./components/kitchen-active-orders/kitchen-active-orders";
 import { KitchenAlerts } from "./components/kitchen-alerts/kitchen-alerts";
 import { EmptyState } from "../../shared/ui/empty-state/empty-state";
+import { KitchenRecommendation } from "./components/kitchen-recommendation/kitchen-recommendation";
 
 @Component({
   selector: 'app-kitchen',
-  imports: [WorkloadGauge, Skeleton, ErrorState, WorkloadSummary, KitchenActiveOrders, KitchenAlerts, EmptyState],
+  imports: [WorkloadGauge, Skeleton, ErrorState, WorkloadSummary, KitchenActiveOrders, KitchenAlerts, EmptyState, KitchenRecommendation],
   templateUrl: './kitchen.html',
   styleUrl: './kitchen.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,7 +45,9 @@ export class Kitchen implements OnInit{
       const count = this.kitchenOrdersCount();
   
       this.kitchenFacade.updateFromOrders(count);
-  
+      this.ordersFacade.updatePriorityByKitchen(
+        this.kitchenFacade.kitchen().level
+      );
     });
 
 

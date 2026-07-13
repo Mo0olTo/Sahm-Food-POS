@@ -21,6 +21,10 @@ export interface Order {
 
   createdAt: string; 
 
-  priority : OrderPriority;
+  priority : OrderPriority; 
+
+  delayMinutes: number;
+
+  isDelayed: boolean;
 
 }

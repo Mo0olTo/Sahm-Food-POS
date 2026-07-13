@@ -1,4 +1,4 @@
-<section class="order-board h-full">
+<section class="order-board h-full w-full">
 
   @if (loading()) {
 
@@ -14,7 +14,7 @@
 
 } @else {
 
-  <div class="grid h-full grid-cols-1 gap-4 md:grid-cols-12 md:gap-6">
+  <div class="grid h-full grid-cols-1 gap-4 md:grid-cols-9 md:gap-6">
 
     <!-- Board -->
     <div class="col-span-1 md:col-span-9">
@@ -53,48 +53,41 @@
         
             <!-- Drawer -->
             <aside
-                class="flex h-full w-[450px] flex-col bg-white shadow-2xl">
-        
-        
-                <!-- Header -->
-                <div
-                    class="flex items-center justify-between border-b border-gray-200 px-6 py-5">
-        
-        
-                    <h2 class="text-xl font-bold">
-        
-                        Order Details
-        
-                    </h2>
-        
-        
-                    <button
-                        type="button"
-                        (click)="closeDetails()"
-                        class="rounded-lg p-2 hover:bg-gray-100">
-        
-                        ✕
-        
-                    </button>
-        
-        
-                </div>
-        
-        
-        
-                <!-- Content -->
-                <div class="flex-1 overflow-y-auto p-6">
-        
-        
-                    <app-order-details
-                        [order]="selectedOrder()">
-                    </app-order-details>
-        
-        
-                </div>
-        
-        
-            </aside>
+    class="flex h-full w-[450px] flex-col border-l border-[var(--color-borders)] bg-[var(--color-section-bg)] shadow-2xl">
+
+    <!-- Header -->
+    <div
+        class="flex items-center justify-between border-b border-[var(--color-borders)] px-6 py-5">
+
+        <h2
+            class="text-xl font-bold text-[var(--color-main-text)]">
+
+            Order Details
+
+        </h2>
+
+        <button
+            type="button"
+            (click)="closeDetails()"
+            class="rounded-lg p-2 text-[var(--color-sec-text)] transition-colors duration-200 hover:bg-[var(--color-bg)] hover:text-[var(--color-primary)]">
+
+            <i class="pi pi-times text-lg"></i>
+
+        </button>
+
+    </div>
+
+    <!-- Content -->
+    <div
+        class="flex-1 overflow-y-auto bg-[var(--color-section-bg)] p-6">
+
+        <app-order-details
+            [order]="selectedOrder()">
+        </app-order-details>
+
+    </div>
+
+</aside>
         
         
         </div>

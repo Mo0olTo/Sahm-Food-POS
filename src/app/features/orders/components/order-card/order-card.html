@@ -5,61 +5,125 @@
   [class.order-card--success]="statusTone() === 'success'"
   [class.order-card--muted]="statusTone() === 'muted'"
   [attr.aria-label]="'Order ' + order().orderNumber + ', ' + order().status"
-  class="relative mb-3 block rounded-xl border border-[var(--color-borders)] bg-[var(--color-bg)] p-4 text-[var(--color-main-text)] transition-all duration-150 hover:-translate-y-0.5 hover:border-[var(--color-primary)] hover:shadow-lg"
+  class="relative mb-3 block rounded-xl
+         border border-[var(--color-borders)]
+         bg-[var(--color-section-bg)]
+         p-4
+         text-[var(--color-main-text)]
+         shadow-sm
+         transition-all duration-200
+         hover:-translate-y-0.5
+         hover:border-[var(--color-primary)]
+         hover:shadow-xl cursor-pointer"
+         title="Show-Order"
 >
+
+  <!-- Header -->
   <header class="flex items-center justify-between gap-2">
+
     <div class="flex min-w-0 flex-1 items-center gap-2 overflow-hidden">
 
       <span
-        class="inline-flex items-center gap-1 rounded-full border border-[var(--color-borders)] px-2 py-0.5 text-[11px] uppercase tracking-wide text-[var(--color-sec-text)]"
-        [attr.data-channel]="channelTone()"
-      >
+        class="inline-flex items-center gap-2 rounded-full
+               border border-[var(--color-borders)]
+               bg-[var(--color-hover)]
+               px-3 py-1
+               text-[11px] font-medium uppercase tracking-wide
+               text-[var(--color-sec-text)]"
+        [attr.data-channel]="channelTone()">
+
         <span
-          class="flex h-4 w-4 items-center justify-center rounded-full bg-current text-[10px] font-bold text-[var(--color-primary)]"
-        >
+          class="flex h-5 w-5 items-center justify-center rounded-full
+                 bg-[var(--color-primary)]
+                 text-xs font-bold text-black">
+
           {{ channelIcon() }}
+
         </span>
 
         {{ channelLabel() }}
+
       </span>
 
-    </div>
+    </div> 
 
-    <div class="flex justify-between items-center gap-5 shrink-0">
+    @if (order().isDelayed) {
+
+      <span
+        class="inline-flex items-center gap-1 rounded-full bg-red-500/15 px-2 py-0.5 text-[11px] font-semibold text-red-400">
+    
+        <i class="pi pi-clock text-xs"></i>
+    
+        Delayed {{ order().delayMinutes }}m
+    
+      </span>
+    
+    }
+
+    <div class="flex items-center gap-3 shrink-0">
+
       <app-priority-badge
         [priority]="order().priority">
       </app-priority-badge>
 
       <app-status-badge
         [status]="order().status">
-      </app-status-badge>
+      </app-status-badge> 
+
+
+    
+
     </div>
+
   </header>
 
-  <div class="mt-2 flex items-center justify-between px-3">
-    <p class="font-bold capitalize text-[var(--color-sec-text)]">
-      {{ order().customerName }}
-    </p>
+  <!-- Customer -->
+  <div class="mt-4 flex items-center justify-between w-full">
 
-    <span class="font-semibold text-[var(--color-sec-text)]">
+    <p class="truncate text-base font-semibold text-[var(--color-main-text)]">
+      {{ order().customerName }}
+    </p> 
+
+    @if (order().status === 'completed') {
+      <button
+        type="button"
+        class="flex h-8 w-8 items-center justify-center rounded-lg
+               text-red-500 transition-colors hover:bg-red-500/10 cursor-pointer"
+        (click)="deleteOrder($event)">
+  
+        <i class="pi pi-trash"></i>
+  
+      </button>
+    }
+
+    <span class="font-bold text-[var(--color-primary)]">
       #{{ order().orderNumber }}
     </span>
+
   </div>
 
-  <footer class="mt-4 flex flex-wrap items-center justify-between gap-2 text-sm">
-    <span class="font-bold capitalize text-[var(--color-sec-text)]">
+  <!-- Footer -->
+  <footer
+    class="mt-5 flex flex-wrap items-center justify-between gap-3
+           border-t border-[var(--color-borders)]
+           pt-4 text-sm">
+
+    <span class="text-[var(--color-sec-text)]">
       {{ itemsLabel() }}
     </span>
 
-    <span class="text-[var(--color-primary)]">
-      {{ totalPrice() | currency:'$':'symbol':'1.0-0'}}
+    <span class="text-lg font-bold text-[var(--color-primary)]">
+      {{ totalPrice() | currency:'$':'symbol':'1.0-0' }}
     </span>
 
     <time
       class="tabular-nums text-[var(--color-sec-text)]"
-      [attr.datetime]="order().createdAt.toString()"
-    >
+      [attr.datetime]="order().createdAt.toString()">
+
       {{ order().createdAt | date:'shortTime' }}
+
     </time>
+
   </footer>
+
 </div>

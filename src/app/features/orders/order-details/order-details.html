@@ -1,47 +1,74 @@
 <section
-    class="h-full rounded-xl border border-[var(--color-borders)] bg-[var(--color-surface)] p-6">
+  class="h-full rounded-xl border border-[var(--color-borders)] bg-[var(--color-section-bg)] p-6">
 
-    @if(order()) {
+  @if (order()) {
 
-        <h2 class="text-xl font-semibold text-white">
-            {{ order()!.orderNumber }}
-        </h2>
+    <div class="space-y-6">
 
-        <p class="mt-1 text-gray-400 text-2xl">
-            {{ order()!.customerName }}
+      <!-- Header -->
+      <div>
+        <p class="text-sm uppercase tracking-wider text-[var(--color-sec-text)]">
+          Order
         </p>
 
-        <div class="mt-4">
+        <h2 class="mt-1 text-3xl font-bold text-[var(--color-primary)]">
+          {{ order()!.orderNumber }}
+        </h2>
 
-            <app-status-badge
-                [status]="order()!.status">
-            </app-status-badge>
+        <p class="mt-2 text-lg font-medium text-[var(--color-main-text)]">
+          {{ order()!.customerName }}
+        </p>
+      </div>
 
-        </div>
+      <!-- Status -->
+      <div class="border-t border-[var(--color-borders)] pt-5">
+        <p class="mb-3 text-sm font-medium uppercase tracking-wide text-[var(--color-sec-text)]">
+          Status
+        </p>
 
-        <div>
-            <h4>Items</h4>
-          
-            <ul>
-              @for (item of order()?.items; track item.name) {
-                <li class="text-[var(--color-primary)] text-xl font-semibold">
-                  {{ item.name }} x {{ item.quantity }}
-                </li>
-              }
-            </ul>
-          </div>
+        <app-status-badge
+          [status]="order()!.status">
+        </app-status-badge>
+      </div>
 
-    }
+      <!-- Items -->
+      <div class="border-t border-[var(--color-borders)] pt-5">
+        <h4 class="mb-4 text-sm font-semibold uppercase tracking-wide text-[var(--color-sec-text)]">
+          Items
+        </h4>
 
-    @else {
+        <ul class="space-y-3">
+          @for (item of order()?.items; track item.name) {
 
-        <div
-            class="flex h-full items-center justify-center text-gray-500">
+            <li
+              class="flex items-center justify-between rounded-lg border border-[var(--color-borders)] bg-[var(--color-bg)] px-4 py-3">
 
-            Select an order
+              <span class="font-medium text-[var(--color-main-text)]">
+                {{ item.name }}
+              </span>
 
-        </div>
+              <span
+                class="rounded-md bg-[var(--color-primary)] px-3 py-1 text-sm font-bold text-black">
+                ×{{ item.quantity }}
+              </span>
 
-    }
+            </li>
+
+          }
+        </ul>
+      </div>
+
+    </div>
+
+  } @else {
+
+    <div
+      class="flex h-full items-center justify-center text-lg text-[var(--color-sec-text)]">
+
+      Select an order
+
+    </div>
+
+  }
 
 </section>
