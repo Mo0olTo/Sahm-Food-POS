@@ -139,17 +139,30 @@ export class OrdersStore {
     this.search.set(value);
   } 
 
-  updatePriorityByKitchen(level: KitchenLevel):void {
+  updatePriorityByKitchen(level: KitchenLevel): void {
+
+    this._orders.update(orders => {
   
-    this._orders.update(orders =>
+      const activeOrders = orders.filter(order =>
+        order.status === 'received' ||
+        order.status === 'preparing' ||
+        order.status === 'ready'
+      );
   
-      orders.map(order => {
   
-        if (order.status === 'completed') {
+      return orders.map(order => {
+  
+  
+        if (
+          order.status === 'completed' ||
+          order.status === 'delivered'
+        ) {
   
           return {
             ...order,
-            priority: 'normal'
+            priority: 'normal',
+            isDelayed: false,
+            delayMinutes: 0,
           };
   
         }
@@ -162,20 +175,22 @@ export class OrdersStore {
   
             return {
               ...order,
-              priority: 'normal'
+              priority: 'normal',
+              isDelayed: false,
+              delayMinutes: 0,
             };
   
   
           case 'medium':
   
-            if (
-              order.status === 'preparing' ||
-              order.status === 'ready'
-            ) {
+            if (activeOrders.length > 5 &&
+                order.status === 'received') {
   
               return {
                 ...order,
-                priority: 'high'
+                priority: 'high',
+                isDelayed: true,
+                delayMinutes: 5,
               };
   
             }
@@ -184,7 +199,8 @@ export class OrdersStore {
   
   
   
-          case 'high': 
+          case 'high':
+  
             if (
               order.status === 'received' ||
               order.status === 'preparing'
@@ -192,7 +208,9 @@ export class OrdersStore {
   
               return {
                 ...order,
-                priority: 'high'
+                priority: 'high',
+                isDelayed: true,
+                delayMinutes: 15,
               };
   
             }
@@ -201,25 +219,30 @@ export class OrdersStore {
   
   
   
-          case 'critical': if (
-            order.status === 'received' ||
-            order.status === 'preparing' ||
-            order.status === 'ready'
-          ) {
-        
-            return {
-              ...order,
-              priority: 'urgent'
-            };
-        
-          }
-        
+          case 'critical':
+  
+            if (
+              order.status === 'received' ||
+              order.status === 'preparing' ||
+              order.status === 'ready'
+            ) {
+  
+              return {
+                ...order,
+                priority: 'urgent',
+                isDelayed: true,
+                delayMinutes: 30,
+              };
+  
+            }
+  
             return order;
+  
         }
   
-      })
+      });
   
-    );
+    });
   
   }
 

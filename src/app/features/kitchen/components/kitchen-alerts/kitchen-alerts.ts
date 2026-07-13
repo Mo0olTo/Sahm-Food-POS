@@ -2,16 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 
 import { KitchenAlert } from '../../models/kitchen-alert.model';
 
-interface AlertView {
-  title: string;
-  message: string;
-  icon: string;
-  tone: 'info' | 'warning' | 'critical';
-  container: string;
-  iconBg: string;
-  iconColor: string;
-  bar: string;
-}
+
 
 @Component({
   selector: 'app-kitchen-alerts',

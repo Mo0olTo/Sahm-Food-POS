@@ -32,6 +32,7 @@
         <app-order-card
           [order]="order"
           (selected)="orderSelected.emit($event)"
+          (delete)="deleteOrder($event)"
         >
         </app-order-card>
 

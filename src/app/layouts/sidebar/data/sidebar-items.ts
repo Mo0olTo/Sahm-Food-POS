@@ -3,22 +3,22 @@ import { SidebarItem } from "../models/sidebar-items.model";
 export const SIDEBAR_ITEMS :SidebarItem[] = [
     {
       label: 'Dashboard',
-      icon: 'dashboard',
+      icon: 'th-large',
       route: '/dashboard',
     },
     {
       label: 'Orders',
-      icon: 'receipt_long',
+      icon: 'receipt',
       route: '/orders',
     },
     {
       label: 'Kitchen',
-      icon: 'restaurant',
+      icon: 'shop',
       route: '/kitchen',
     },
     {
       label: 'Products',
-      icon: 'inventory_2',
+      icon: 'box',
       route: '/products',
     },
     {
@@ -28,12 +28,12 @@ export const SIDEBAR_ITEMS :SidebarItem[] = [
     },
     {
       label: 'Reports',
-      icon: 'bar_chart',
+      icon: 'chart-line',
       route: '/reports',
     },
     {
       label: 'Settings',
-      icon: 'settings',
+      icon: 'cog',
       route: '/settings',
     },
   ];

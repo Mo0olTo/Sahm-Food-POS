@@ -1,0 +1,18 @@
+<section
+  class="flex
+    flex-col
+    gap-3"
+>
+
+
+@for(product of products(); track product.id){
+
+    <app-product-card
+     [product]="product"
+     (add)="productSelected.emit($event)"
+    ></app-product-card>
+
+}
+
+
+</section>

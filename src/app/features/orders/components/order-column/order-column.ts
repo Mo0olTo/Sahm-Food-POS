@@ -1,7 +1,8 @@
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { Order } from '../../models/order.model';
 import { OrderCard } from "../order-card/order-card";
 import { EmptyState } from "../../../../shared/ui/empty-state/empty-state";
+import { OrdersFacade } from '../../facade/orders.facade';
 
 @Component({
   selector: 'app-order-column',
@@ -9,7 +10,9 @@ import { EmptyState } from "../../../../shared/ui/empty-state/empty-state";
   templateUrl: './order-column.html',
   styleUrl: './order-column.scss',
 })
-export class OrderColumn {
+export class OrderColumn { 
+
+  private readonly facade=inject(OrdersFacade)
   title = input.required<string>();
 
   orders = input.required<Order[]>(); 
@@ -18,6 +21,9 @@ export class OrderColumn {
   onOrderSelected(orderId: number): void {
     this.orderSelected.emit(orderId);
   }
-
+  
+  deleteOrder(id: number): void {
+    this.facade.deleteOrder(id)
+  }
   
 }

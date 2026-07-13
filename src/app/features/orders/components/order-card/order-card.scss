@@ -2,29 +2,29 @@
 .order-card--warn::before,
 .order-card--success::before,
 .order-card--muted::before {
-  content: '';
+  content: "";
   position: absolute;
+  inset-block: 0.75rem;
   left: 0;
-  top: 0.75rem;
-  bottom: 0.75rem;
-  width: 3px;
-  border-radius: 0 2px 2px 0;
-  opacity: .7;
+  width: 4px;
+  border-radius: 9999px;
+  opacity: 0.9;
+  transition: all .2s ease;
 }
 
 .order-card--info::before {
-  background: #38bdf8;
+  background: var(--color-info);
 }
 
 .order-card--warn::before {
-  background: #f59e0b;
+  background: var(--color-warning);
 }
 
 .order-card--success::before {
-  background: #22c55e;
+  background: var(--color-success);
 }
 
 .order-card--muted::before {
-  background: var(--color-sec-text);
-  opacity: .5;
+  background: var(--color-muted);
+  opacity: .7;
 }

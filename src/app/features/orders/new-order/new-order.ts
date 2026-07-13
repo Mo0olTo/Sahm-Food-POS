@@ -3,10 +3,12 @@ import { OrdersFacade } from '../facade/orders.facade';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrderChannel } from '../models/order-channel.type';
 import { OrderItem } from '../models/order-item';
+import { Product } from '../../products/models/product.model';
+import { ProductSelector } from '../../products/components/product-selector/product-selector';
 
 @Component({
   selector: 'app-new-order',
-  imports: [ReactiveFormsModule,],
+  imports: [ReactiveFormsModule, ProductSelector],
   templateUrl: './new-order.html',
   styleUrl: './new-order.scss',
   changeDetection:ChangeDetectionStrategy.OnPush
@@ -19,11 +21,6 @@ export class NewOrder {
   readonly close = output<void>();
   readonly items = signal<OrderItem[]>([]);
 
-  constructor() {
-
-    this.addItem();
-  
-  }
 
   onClose(): void {
 
@@ -48,7 +45,7 @@ export class NewOrder {
     ],
   
     total: [
-      '',
+      0,
       [
         Validators.required,
         Validators.min(1),
@@ -84,7 +81,7 @@ export class NewOrder {
     
       priority: 'normal',
     
-      total: value.total,
+      total: value.total.toString(),
     
       items: this.items(), 
 
@@ -96,9 +93,13 @@ export class NewOrder {
     this.form.reset({
       customerName: '',
       channel: 'walk-in',
-      total: '',
+      total: 0,
     });
-    
+    this.items.set([  {
+      name: '',
+      price: 0,
+      quantity: 1,
+    }]);
     this.onClose();
   
   } 
@@ -122,8 +123,11 @@ export class NewOrder {
   removeItem(index: number): void {
 
     this.items.update(items =>
-      items.filter((_, i) => i !== index)
-    );
+      items.filter((_,i)=>i!==index)
+     );
+     
+     
+     this.updateTotal();
   
   } 
 
@@ -170,5 +174,47 @@ export class NewOrder {
   
     );
   
-  }
+  } 
+
+  addProduct(product: Product): void {
+
+
+    this.items.update(items => [
+    
+     ...items,
+    
+     {
+       name: product.name,
+       price: product.price,
+       quantity: 1
+     }
+    
+    ]);
+    
+    
+    this.updateTotal();
+    
+    
+    } 
+
+
+    updateTotal(): void {
+      const total = this.items()
+      .reduce(
+      (sum,item)=>
+      sum + (item.price * item.quantity)
+      ,0
+      );
+      
+      
+      this.form.patchValue({
+        total
+      });
+      
+      
+    }
+
+
+
+
 }
