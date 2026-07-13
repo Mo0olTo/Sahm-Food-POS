@@ -1,4 +1,30 @@
-<section class="kitchen">
-  <h1 class="kitchen__title">Kitchen Load Monitor</h1>
-  <p class="kitchen__hint">Live workload view comes online once the kitchen store is wired.</p>
+<section>
+
+  @if (loading()) {
+
+    <app-skeleton
+    [rows]="8"
+    ></app-skeleton>
+
+} @else if (error()) {
+
+    <app-error-state
+        (retry)="reload()">
+    </app-error-state>
+
+} @else {
+  <div class="space-y-5">
+
+    <app-workload-gauge
+      [kitchen]="kitchen()">
+    </app-workload-gauge>
+
+
+    <app-workload-summary
+      [kitchen]="kitchen()">
+    </app-workload-summary>
+
+  </div>
+
+}
 </section>

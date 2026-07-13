@@ -1,39 +1,64 @@
 <div
-  class="order-card"
   (click)="onSelect()"
   [class.order-card--info]="statusTone() === 'info'"
   [class.order-card--warn]="statusTone() === 'warn'"
   [class.order-card--success]="statusTone() === 'success'"
   [class.order-card--muted]="statusTone() === 'muted'"
   [attr.aria-label]="'Order ' + order().orderNumber + ', ' + order().status"
+  class="relative mb-3 block rounded-xl border border-[var(--color-borders)] bg-[var(--color-bg)] p-4 text-[var(--color-main-text)] transition-all duration-150 hover:-translate-y-0.5 hover:border-[var(--color-primary)] hover:shadow-lg"
 >
-  <header class="order-card__header">
-    <div class="order-card__id">
-      
-      <span class="order-card__channel" [attr.data-channel]="channelTone()">
-        <span class="order-card__channel-glyph" aria-hidden="true">{{ channelIcon() }}</span>
+  <header class="flex items-center justify-between gap-2">
+    <div class="flex min-w-0 flex-1 items-center gap-2 overflow-hidden">
+
+      <span
+        class="inline-flex items-center gap-1 rounded-full border border-[var(--color-borders)] px-2 py-0.5 text-[11px] uppercase tracking-wide text-[var(--color-sec-text)]"
+        [attr.data-channel]="channelTone()"
+      >
+        <span
+          class="flex h-4 w-4 items-center justify-center rounded-full bg-current text-[10px] font-bold text-[var(--color-primary)]"
+        >
+          {{ channelIcon() }}
+        </span>
+
         {{ channelLabel() }}
       </span>
+
     </div>
 
-    <app-status-badge
-      class="order-card__badge"
-      [status]="order().status">
-    </app-status-badge>
-  </header>
-    <div class="w-full flex items-center justify-between px-3 mt-2">
-      <p class="text-[var(--color-sec-text)] font-bold capitalize ">
-        {{ order().customerName }}
-      </p>
-      <span class="text-[var(--color-sec-text)] font-semibold">#{{ order().orderNumber }}</span>
+    <div class="flex justify-between items-center gap-5 shrink-0">
+      <app-priority-badge
+        [priority]="order().priority">
+      </app-priority-badge>
+
+      <app-status-badge
+        [status]="order().status">
+      </app-status-badge>
     </div>
- 
-  <footer class="order-card__footer">
-    <span class="text-[var(--color-sec-text)] font-bold capitalize">
+  </header>
+
+  <div class="mt-2 flex items-center justify-between px-3">
+    <p class="font-bold capitalize text-[var(--color-sec-text)]">
+      {{ order().customerName }}
+    </p>
+
+    <span class="font-semibold text-[var(--color-sec-text)]">
+      #{{ order().orderNumber }}
+    </span>
+  </div>
+
+  <footer class="mt-4 flex flex-wrap items-center justify-between gap-2 text-sm">
+    <span class="font-bold capitalize text-[var(--color-sec-text)]">
       {{ itemsLabel() }}
     </span>
-    <span>{{ totalPrice() | currency:'EGP' }}</span>
-    <time class="order-card__time" [attr.datetime]="order().createdAt.toString()">
+
+    <span class="text-[var(--color-primary)]">
+      {{ totalPrice() | currency:'$':'symbol':'1.0-0'}}
+    </span>
+
+    <time
+      class="tabular-nums text-[var(--color-sec-text)]"
+      [attr.datetime]="order().createdAt.toString()"
+    >
       {{ order().createdAt | date:'shortTime' }}
     </time>
   </footer>

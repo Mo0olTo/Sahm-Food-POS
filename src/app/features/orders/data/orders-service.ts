@@ -6,7 +6,8 @@ import { environment } from '../../../../environments/environment';
 import { API_ROUTES } from '../../../core/constants/API_ROUTES';
 
 import { Order } from '../models/order.model';
-import { OrderStatus } from '../models/order-status.type';
+import { CreateOrder } from '../models/create.order';
+
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +27,7 @@ export class OrdersService {
     );
   }
 
-  createOrder(order: Order): Observable<Order> {
+  createOrder(order: CreateOrder): Observable<Order> {
     return this.http.post<Order>(
       `${this.apiUrl}${API_ROUTES.orders.create}`,
       order

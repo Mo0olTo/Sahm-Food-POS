@@ -3,4 +3,5 @@ export type StatCardType =
   | 'received'
   | 'preparing'
   | 'ready'
+  | 'delivered'
   | 'completed';

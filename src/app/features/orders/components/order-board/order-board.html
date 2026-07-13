@@ -38,9 +38,68 @@
     <!-- Details Panel -->
     <div class="col-span-1 md:col-span-3 md:max-h-[calc(100vh-6rem)] md:sticky md:top-4">
 
-      <app-order-details
-        [order]="selectedOrder()">
-      </app-order-details>
+      @if (detailsOpen()) {
+
+        <div class="fixed inset-0 z-50 flex">
+        
+        
+            <!-- Overlay -->
+            <div
+                class="flex-1 bg-black/40 backdrop-blur-sm"
+                (click)="closeDetails()">
+            </div>
+        
+        
+        
+            <!-- Drawer -->
+            <aside
+                class="flex h-full w-[450px] flex-col bg-white shadow-2xl">
+        
+        
+                <!-- Header -->
+                <div
+                    class="flex items-center justify-between border-b border-gray-200 px-6 py-5">
+        
+        
+                    <h2 class="text-xl font-bold">
+        
+                        Order Details
+        
+                    </h2>
+        
+        
+                    <button
+                        type="button"
+                        (click)="closeDetails()"
+                        class="rounded-lg p-2 hover:bg-gray-100">
+        
+                        ✕
+        
+                    </button>
+        
+        
+                </div>
+        
+        
+        
+                <!-- Content -->
+                <div class="flex-1 overflow-y-auto p-6">
+        
+        
+                    <app-order-details
+                        [order]="selectedOrder()">
+                    </app-order-details>
+        
+        
+                </div>
+        
+        
+            </aside>
+        
+        
+        </div>
+        
+        }
 
     </div>
 

@@ -5,6 +5,8 @@ import { OrdersStore } from '../store/orders.store';
 import { LiveOrders } from '../data/live-orders';
 import { OrderStatus } from '../models/order-status.type';
 import { Order } from '../models/order.model';
+import { KitchenLevel } from '../../kitchen/models/kitchen-level.type';
+import { CreateOrder } from '../models/create.order';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +29,8 @@ export class OrdersFacade {
   readonly loading = this.store.loading;
   readonly error = this.store.error;
 
-  readonly statistics = this.store.statistics;
+  readonly statistics = this.store.statistics; 
+  readonly kitchenOrdersCount = this.store.kitchenOrdersCount;
 
   // ==========================
   // Actions
@@ -37,7 +40,7 @@ export class OrdersFacade {
     this.store.loadOrders();
   }
   
-  createOrder(order: Order): void {
+  createOrder(order: CreateOrder): void {
 
     this.store.createOrder(order);
   
@@ -65,7 +68,7 @@ export class OrdersFacade {
 
   setSearch(value: string): void {
     this.store.setSearch(value);
-  }
+  } 
 
   // ==========================
   // Live Updates
@@ -93,55 +96,10 @@ export class OrdersFacade {
   
   }
 
-  // startLiveUpdates(): void {
-
-  //   this.liveService
-  //     .updates()
-  //     .pipe(
-  //       takeUntilDestroyed(this.destroyRef)
-  //     )
-  //     .subscribe(() => {
+ 
+  updatePriorityByKitchen(level: KitchenLevel):void {
   
-  //       const orders = this.orders();
+    this.store.updatePriorityByKitchen(level);
   
-  //       if (!orders.length) {
-  //         return;
-  //       }
-  
-  //       const randomIndex = Math.floor(Math.random() * orders.length);
-  
-  //       const order = orders[randomIndex];
-  
-  //       this.updateOrderStatus(
-  //         order.id,
-  //         this.nextStatus(order.status)
-  //       );
-  //     });
-  
-  // }
-  
-
-  // private nextStatus(status: OrderStatus): OrderStatus {
-
-  //   switch (status) {
-  
-  //     case 'received':
-  //       return 'preparing';
-  
-  //     case 'preparing':
-  //       return 'ready';
-  
-  //     case 'ready':
-  //       return 'delivered';
-  
-  //     case 'delivered':
-  //       return 'completed';
-  
-  //     default:
-  //       return 'completed';
-  
-  //   }
-  
-  // }
-
+  }
 }

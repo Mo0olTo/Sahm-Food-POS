@@ -1,1 +1,41 @@
-<p>workload-gauge works!</p>
+<section class="rounded-xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
+
+    <div class="mb-4 flex items-center justify-between">
+  
+      <h3 class="text-base font-semibold text-[var(--color-text)]">
+        Kitchen Load
+      </h3>
+  
+      <span class="text-lg font-bold text-[var(--color-primary)]">
+        {{ kitchen().percentage }}%
+      </span>
+  
+    </div>
+  
+    <div class="h-3 overflow-hidden rounded-full bg-gray-200">
+  
+      <div
+        class="h-full rounded-full transition-all duration-500"
+        [style.width.%]="kitchen().percentage"
+        [class]="barColor()">
+      </div>
+  
+    </div>
+  
+    <div class="mt-4 flex items-center justify-between">
+  
+      <span class="text-sm text-[var(--color-sec-text)]">
+        Current Workload
+      </span>
+  
+      <span
+        class="rounded-full px-3 py-1 text-xs font-semibold capitalize"
+        [class]="badgeColor()">
+  
+        {{ kitchen().level }}
+  
+      </span>
+  
+    </div>
+  
+  </section>

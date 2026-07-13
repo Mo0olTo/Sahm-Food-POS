@@ -4,13 +4,14 @@ import { Order } from '../../models/order.model';
 import { OrderChannel } from '../../models/order-channel.type';
 import { OrderStatus } from '../../models/order-status.type';
 import { StatusBadge } from "../../../../shared/ui/status-badge/status-badge";
+import { PriorityBadge } from "../../../../shared/ui/priority-badge/priority-badge";
 
 type StatusTone = 'neutral' | 'info' | 'warn' | 'success' | 'muted';
 type ChannelTone = 'walk-in' | 'delivery' | 'online';
 
 @Component({
   selector: 'app-order-card',
-  imports: [DatePipe, StatusBadge ,CurrencyPipe],
+  imports: [DatePipe, StatusBadge, CurrencyPipe, PriorityBadge],
   templateUrl: './order-card.html',
   styleUrl: './order-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

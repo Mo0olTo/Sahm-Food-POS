@@ -1,43 +1,63 @@
-<section class="order-column">
+<section
+  class="flex min-w-0 flex-col overflow-hidden rounded-xl border border-[var(--color-borders)] bg-[var(--color-bg)]"
+>
 
- 
   @if (orders().length > 0) {
 
-    <header class="order-column__header">
-      <h2 class="order-column__title">
+    <header
+      class="sticky top-0  flex items-center justify-between gap-2 border-b border-[var(--color-borders)] bg-[var(--color-section-bg)] px-4 py-3"
+    >
+      <h2
+        class="truncate whitespace-nowrap text-base font-semibold text-[var(--color-primary)]"
+      >
         {{ title() }}
       </h2>
-      <span class="order-column__count" aria-label="Order count">
+
+      <span
+        aria-label="Order count"
+        class="min-w-8 rounded-full border border-[var(--color-borders)] px-2 py-0.5 text-center text-lg tabular-nums text-[var(--color-primary)]"
+      >
         {{ orders().length }}
       </span>
     </header>
-  
-    <div class="order-column__list" role="list">
-  
+
+
+    <div
+      class="flex flex-col gap-3 overflow-y-auto p-3 [-webkit-overflow-scrolling:touch]"
+      role="list"
+    >
+
       @for (order of orders(); track order.id) {
-  
+
         <app-order-card
           [order]="order"
           (selected)="orderSelected.emit($event)"
-          >
+        >
         </app-order-card>
-  
-      }
-  
-      @empty {
-        <p class="order-column__empty">No orders</p>
-      }
-  
-    </div> 
-  
 
-} @else {
+      }
+
+      @empty {
+
+        <p
+          class="py-6 text-center text-sm text-[var(--color-sec-text)]"
+        >
+          No orders
+        </p>
+
+      }
+
+    </div>
+
+
+  } @else {
 
     <app-empty-state
-        title="No Orders"
-        description="No active orders in this channel.">
+      title="No Orders"
+      description="No active orders in this channel."
+    >
     </app-empty-state>
 
-}
+  }
 
 </section>
