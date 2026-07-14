@@ -1,1 +1,36 @@
-<p>ai-prompt works!</p>
+<div
+  class="flex items-center gap-2 rounded-xl
+         border border-[var(--color-borders)]
+         bg-[var(--color-bg)]
+         px-3 py-2
+         transition focus-within:border-[var(--color-primary)]">
+
+  <input
+    type="text"
+    [ngModel]="prompt()"
+    (ngModelChange)="prompt.set($event)"
+    (keydown.enter)="submit()"
+    placeholder="Ask the AI assistant..."
+    aria-label="Prompt the AI assistant"
+    class="flex-1 bg-transparent text-sm
+           text-[var(--color-main-text)]
+           placeholder:text-[var(--color-sec-text)]
+           focus:outline-none" />
+
+  <button
+    type="button"
+    (click)="submit()"
+    [disabled]="!prompt().trim()"
+    aria-label="Send prompt"
+    class="flex h-9 w-9 items-center justify-center
+           rounded-lg bg-[var(--color-primary)] text-black
+           transition
+           hover:bg-[var(--color-primary)]/90
+           disabled:cursor-not-allowed disabled:opacity-40
+           disabled:hover:bg-[var(--color-primary)]">
+
+    <i class="pi pi-send text-sm"></i>
+
+  </button>
+
+</div>

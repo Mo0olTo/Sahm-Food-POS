@@ -1,5 +1,5 @@
 <section
-  class="h-full rounded-xl border border-[var(--color-borders)] bg-[var(--color-section-bg)] p-6">
+  class="min-h-0 overflow-hidden rounded-xl border border-[var(--color-borders)] bg-[var(--color-section-bg)] p-6">
 
   @if (order()) {
 
@@ -56,6 +56,17 @@
 
           }
         </ul>
+      </div>
+
+      <!-- AI Assistant -->
+      <div
+        class="w-full border-t border-[var(--color-borders)] pt-6">
+
+        <app-ai-chat
+          class="block w-full"
+          [order]="order()!">
+        </app-ai-chat>
+
       </div>
 
     </div>
