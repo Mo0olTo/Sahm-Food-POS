@@ -4,7 +4,11 @@
 /dist
 /tmp
 /out-tsc
-/bazel-out
+/bazel-out 
+
+# AI assistant instructions
+CLAUDE.md
+.claude/
 
 # Node
 /node_modules
