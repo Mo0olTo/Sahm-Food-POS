@@ -26,6 +26,7 @@ export class Search {
   protected readonly isOpen = signal(false);
 
   readonly productSelected = output<Product>();
+  protected readonly selectedIndex = signal(-1);
 
   protected onFocusChange(focused: boolean): void {
 
@@ -33,12 +34,13 @@ export class Search {
 
   }
 
-  protected onNavigate(_index: number): void {
+  protected onNavigate(index: number): void {
 
+  
     if (!this.isOpen()) {
       this.isOpen.set(true);
     }
-
+  
   }
 
   protected onSubmit(query: string): void {

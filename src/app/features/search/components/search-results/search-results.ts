@@ -23,9 +23,9 @@ export class SearchResults {
   protected readonly facade = inject(SearchFacade);
 
   protected readonly selectedIndex = this.facade.selectedIndex;
-
+  
   readonly productSelected = output<Product>();
-
+  
   selectProduct(product: Product): void {
 
     this.facade.addRecentSearch(this.facade.query());

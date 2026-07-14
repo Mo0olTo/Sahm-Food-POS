@@ -2,7 +2,7 @@
   class="flex min-w-0 flex-col overflow-hidden rounded-xl border border-[var(--color-borders)] bg-[var(--color-bg)]"
 >
 
-  @if (orders().length > 0) {
+  @if (orders().length >= 0) {
 
     <header
       class="sticky top-0  flex items-center justify-between gap-2 border-b border-[var(--color-borders)] bg-[var(--color-section-bg)] px-4 py-3"
@@ -23,7 +23,7 @@
 
 
     <div
-      class="flex flex-col gap-3 overflow-y-auto p-3 [-webkit-overflow-scrolling:touch]"
+      class="flex flex-col gap-y-6 overflow-y-auto p-3 [-webkit-overflow-scrolling:touch]"
       role="list"
     >
 

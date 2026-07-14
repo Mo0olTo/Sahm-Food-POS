@@ -100,7 +100,7 @@ export class OfflineService {
   }
 
   private run(action: OfflineAction): void {
-    console.log('RUN', action.type, action.id);
+  
     const handler = this.handlers.get(action.type);
 
     if (!handler) {
@@ -143,7 +143,6 @@ export class OfflineService {
   }
 
   private processNext(): void {
-    console.log(this.queue.getAll());
     const action = this.queue.next();
 
     if (!action) {

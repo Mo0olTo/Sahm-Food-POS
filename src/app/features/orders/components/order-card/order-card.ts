@@ -30,9 +30,11 @@ export class OrderCard {
   } 
 
   deleteOrder(event: MouseEvent): void {
-    event.stopPropagation(); // حتى لا يتم تنفيذ onSelect()
+    event.stopPropagation(); 
     this.delete.emit(this.order().id);
   }
+
+  
   // Map order lifecycle to a tone used by the status pill (and accent border).
   readonly statusTone = computed<StatusTone>(() => {
     const status = this.order().status;
