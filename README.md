@@ -503,7 +503,13 @@ Possible future enhancements include:
 - Internationalization (i18n).
 - Dark mode.
 
----
+--- 
+
+
+## Demo link
+https://sahm-food-pos.vercel.app/dashboard
+
+
 
 # Running the Project
 
