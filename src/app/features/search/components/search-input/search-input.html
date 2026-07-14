@@ -1,1 +1,55 @@
-<p>search-input works!</p>
+<div
+  [class]="'search-field' + (isFocused() ? ' search-field--focused' : '')">
+
+  <i
+    class="pi pi-search text-base shrink-0"
+    [class.text-\[var\(--color-primary\)\]]="isFocused()"
+    [class.text-\[var\(--color-sec-text\)\]]="!isFocused()"
+    aria-hidden="true">
+  </i>
+
+  <input
+    #input
+    type="text"
+    role="combobox"
+    [attr.aria-expanded]="isFocused()"
+    [attr.aria-controls]="'search-results'"
+    [attr.aria-activedescendant]="activeDescendantId()"
+    aria-autocomplete="list"
+    autocomplete="off"
+    spellcheck="false"
+    placeholder="Search products, categories…"
+    [value]="value()"
+    (input)="onInput($event)"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
+    (keydown)="onKeydown($event)"
+    class="h-full w-full min-w-0 flex-1 border-0 bg-transparent
+           text-sm text-[var(--color-main-text)]
+           placeholder:text-[var(--color-sec-text)]
+           outline-none focus:ring-0">
+
+  @if (value()) {
+
+    <button
+      type="button"
+      aria-label="Clear search"
+      (mousedown)="$event.preventDefault()"
+      (click)="clear()"
+      class="search-field__clear">
+
+      <i class="pi pi-times text-xs" aria-hidden="true"></i>
+
+    </button>
+
+  } @else {
+
+    <kbd class="search-field__kbd">
+
+      /
+
+    </kbd>
+
+  }
+
+</div>

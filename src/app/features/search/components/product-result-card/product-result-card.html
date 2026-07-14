@@ -1,1 +1,91 @@
-<p>product-result-card works!</p>
+@let variantValue = variant();
+
+<button
+  type="button"
+  [attr.aria-label]="'Add ' + product().name + ' to order'"
+  (click)="onAdd()"
+  (mouseenter)="hovered.set(true)"
+  (mouseleave)="hovered.set(false)"
+  [class]="containerClasses()"
+  [attr.data-selected]="isSelected()"
+  [attr.data-compact]="variantValue === 'compact'">
+
+  <!-- Image -->
+
+  @if (product().image) {
+
+    <img
+      [src]="product().image"
+      [alt]="product().name"
+      class="h-10 w-10 shrink-0 rounded-lg object-cover">
+
+  } @else {
+
+    <div
+      class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg
+             bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+
+      <i class="pi pi-shopping-bag" aria-hidden="true"></i>
+
+    </div>
+
+  }
+
+  <!-- Product -->
+
+  <div class="min-w-0 flex-1">
+
+    <div class="flex items-center justify-between gap-3">
+
+      <h3
+        class="truncate text-sm font-semibold text-[var(--color-main-text)]"
+        [innerHTML]="highlightedName()">
+      </h3>
+
+      <span
+        class="shrink-0 text-sm font-bold tabular-nums text-[var(--color-primary)]">
+
+        {{ product().price | currency:'EGP':'symbol':'1.0-0' }}
+
+      </span>
+
+    </div>
+
+    @if (variantValue === 'full' && product().description) {
+
+      <p
+        class="mt-1 line-clamp-2 text-xs text-[var(--color-sec-text)]"
+        [innerHTML]="highlightedDescription()">
+      </p>
+
+    }
+
+    <div class="mt-1.5 flex items-center justify-between gap-2">
+
+      <span
+        class="rounded-full bg-[var(--color-bg)] px-2 py-0.5 text-[10px] font-medium
+               uppercase tracking-wider text-[var(--color-sec-text)]">
+
+        {{ product().category }}
+
+      </span>
+
+      @if (variantValue === 'full') {
+
+        <span
+          class="inline-flex items-center gap-1 rounded-lg bg-[var(--color-primary)]
+                 px-2.5 py-1 text-xs font-semibold text-white">
+
+          <i class="pi pi-plus text-[10px]" aria-hidden="true"></i>
+
+          Add
+
+        </span>
+
+      }
+
+    </div>
+
+  </div>
+
+</button>

@@ -1,4 +1,24 @@
-<section class="search">
-  <h1 class="search__title">Product Search</h1>
-  <p class="search__hint">Search experience ships once the search store lands.</p>
-</section>
+<div class="search-host">
+
+  <app-search-input
+    (focusChange)="onFocusChange($event)"
+    (navigate)="onNavigate($event)"
+    (submit)="onSubmit($event)">
+  </app-search-input>
+
+  @if (isOpen()) {
+
+    <div
+      class="search-dropdown"
+      role="dialog"
+      aria-label="Search results">
+
+      <app-search-results
+        (productSelected)="onProductSelected($event)">
+      </app-search-results>
+
+    </div>
+
+  }
+
+</div>

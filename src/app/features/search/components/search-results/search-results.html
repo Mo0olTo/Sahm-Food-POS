@@ -1,1 +1,74 @@
-<p>search-results works!</p>
+<div class="flex flex-col gap-2 p-2">
+
+  @if (!facade.query().trim()) {
+
+    <app-recent-searches></app-recent-searches>
+
+  } @else if (facade.results().length > 0) {
+
+    <div class="flex flex-col gap-1.5">
+
+      <div class="flex items-center justify-between px-2 pb-1 pt-0.5">
+
+        <span
+          class="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-sec-text)]">
+
+          {{ facade.results().length }} result{{ facade.results().length === 1 ? '' : 's' }}
+
+        </span>
+
+      </div>
+
+      <ul
+        id="search-results"
+        role="listbox"
+        class="flex max-h-[60vh] flex-col gap-1.5 overflow-y-auto">
+
+        @for (product of facade.results(); track product.id; let i = $index) {
+
+          <li
+            [id]="'search-result-' + i"
+            role="option"
+            [attr.aria-selected]="i === selectedIndex()">
+
+            <app-product-result-card
+              [product]="product"
+              variant="compact"
+              [selected]="i === selectedIndex()"
+              (add)="selectProduct($event)">
+            </app-product-result-card>
+
+          </li>
+
+        }
+
+      </ul>
+
+    </div>
+
+  } @else {
+
+    <div class="flex flex-col items-center justify-center gap-2 px-3 py-8 text-center">
+
+      <i
+        class="pi pi-search-minus text-2xl text-[var(--color-sec-text)]"
+        aria-hidden="true">
+      </i>
+
+      <p class="text-sm font-medium text-[var(--color-main-text)]">
+
+        No products found
+
+      </p>
+
+      <p class="text-xs text-[var(--color-sec-text)]">
+
+        Try a different search term or category.
+
+      </p>
+
+    </div>
+
+  }
+
+</div>

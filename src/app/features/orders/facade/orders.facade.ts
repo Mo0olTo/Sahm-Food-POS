@@ -7,6 +7,8 @@ import { OrderStatus } from '../models/order-status.type';
 import { Order } from '../models/order.model';
 import { KitchenLevel } from '../../kitchen/models/kitchen-level.type';
 import { CreateOrder } from '../models/create.order';
+import { OrdersService } from '../data/orders-service';
+import { OfflineService } from '../../../core/offline/offline.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +18,8 @@ export class OrdersFacade {
   private readonly store = inject(OrdersStore);
   private readonly liveService = inject(LiveOrders);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly ordersService = inject(OrdersService);
+  private readonly offline = inject(OfflineService);
 
   // ==========================
   // State
@@ -35,6 +39,7 @@ export class OrdersFacade {
   // ==========================
   // Actions
   // ==========================
+
 
   loadOrders(): void {
     this.store.loadOrders();
@@ -101,5 +106,10 @@ export class OrdersFacade {
   
     this.store.updatePriorityByKitchen(level);
   
-  }
+  } 
+  
+
+  
+
+  
 }

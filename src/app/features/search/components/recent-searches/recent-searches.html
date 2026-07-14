@@ -1,1 +1,79 @@
-<p>recent-searches works!</p>
+<div class="flex flex-col gap-1">
+
+  <div class="flex items-center justify-between px-3 pb-1.5 pt-1">
+
+    <span
+      class="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-sec-text)]">
+
+      Recent searches ({{ facade.recentSearches().length }})
+
+    </span>
+
+    @if (facade.recentSearches().length > 0) {
+
+      <button
+        type="button"
+        class="text-[11px] font-medium text-[var(--color-sec-text)] transition
+               hover:text-[var(--color-primary)]"
+        (click)="clear()">
+
+        Clear all
+
+      </button>
+
+    }
+
+  </div>
+
+  @if (facade.recentSearches().length === 0) {
+
+    <p class="px-3 py-4 text-center text-sm text-[var(--color-sec-text)]">
+
+      No recent searches yet.
+
+    </p>
+
+  } @else {
+
+    <ul class="flex flex-col">
+
+      @for (item of facade.recentSearches(); track item) {
+
+        <li>
+
+          <button
+            type="button"
+            (click)="select(item)"
+            class="group flex w-full items-center gap-3 rounded-lg px-3 py-2
+                   text-left transition hover:bg-[var(--color-hover)]">
+
+            <i
+              class="pi pi-history text-sm text-[var(--color-sec-text)] transition
+                     group-hover:text-[var(--color-primary)]"
+              aria-hidden="true">
+            </i>
+
+            <span
+              class="flex-1 truncate text-sm text-[var(--color-main-text)]">
+
+              {{ item }}
+
+            </span>
+
+            <i
+              class="pi pi-arrow-up-right text-xs text-[var(--color-sec-text)]
+                     opacity-0 transition group-hover:opacity-100"
+              aria-hidden="true">
+            </i>
+
+          </button>
+
+        </li>
+
+      }
+
+    </ul>
+
+  }
+
+</div>

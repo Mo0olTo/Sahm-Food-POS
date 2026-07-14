@@ -14,10 +14,12 @@
     </header>
     
     
-    <app-product-grid
-        [products]="products()"
-        (productSelected)="selectProduct($event)"
-    ></app-product-grid>
+    <div class="overflow-y-scroll h-[300px]">
+      <app-product-grid
+          [products]="products()"
+          (productSelected)="selectProduct($event)"
+      ></app-product-grid>
 
+    </div>
     
     </section>

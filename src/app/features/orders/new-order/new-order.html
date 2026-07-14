@@ -89,16 +89,18 @@
     
                     <!-- Items -->
                     <!-- Product Selector -->
-                    <div class="space-y-4">
+                    <div class="space-y-4 ">
 
                         <h3 class="font-semibold text-[var(--color-main-text)]">
                             Select Products
                         </h3>
 
 
-                        <app-product-selector
-                            (productSelected)="addProduct($event)">
-                        </app-product-selector>
+                        <div class="">
+                            <app-product-selector
+                                 (productSelected)="addProduct($event)">
+                            </app-product-selector>
+                        </div>
 
 
                     </div>
@@ -160,7 +162,7 @@
                         </label>
     
                         <input
-                            type="number"
+                            readonly
                             formControlName="total"
                             class="w-full rounded-xl border border-[var(--color-borders)] bg-[var(--color-bg)] px-4 py-3 text-[var(--color-main-text)] outline-none focus:border-[var(--color-primary)]">
     
@@ -170,7 +172,7 @@
                         ) {
     
                             <p class="mt-2 text-sm text-[var(--color-secondary)]">
-                                Total is required.
+                                Add items to proceed to checkout
                             </p>
     
                         }
