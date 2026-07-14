@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 import { KitchenAlert } from '../../models/kitchen-alert.model';
+import { AlertView } from '../../models/alert-view.model';
 
 
 
@@ -11,7 +12,7 @@ import { KitchenAlert } from '../../models/kitchen-alert.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KitchenAlerts {
-
+ 
   alerts = input.required<readonly KitchenAlert[]>();
 
   readonly hasAlerts = computed(() => this.alerts().length > 0);

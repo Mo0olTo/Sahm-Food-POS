@@ -26,7 +26,6 @@ export class OrdersStore {
 
   private readonly _orders = signal<Order[]>([]);
   private readonly _selectedOrderId = signal<number | null>(null);
-  private readonly isSubmitting = signal(false);
   private readonly _loading = signal(false);
   private readonly _error = signal<string | null>(null);
 
