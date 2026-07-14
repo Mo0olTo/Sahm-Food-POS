@@ -18,9 +18,6 @@ export class OrdersFacade {
   private readonly store = inject(OrdersStore);
   private readonly liveService = inject(LiveOrders);
   private readonly destroyRef = inject(DestroyRef);
-  private readonly ordersService = inject(OrdersService);
-  private readonly offline = inject(OfflineService);
-
   // ==========================
   // State
   // ==========================

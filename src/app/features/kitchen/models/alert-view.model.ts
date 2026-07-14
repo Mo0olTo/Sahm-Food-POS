@@ -1,4 +1,4 @@
-interface AlertView {
+export interface AlertView {
   title: string;
   message: string;
   icon: string;
