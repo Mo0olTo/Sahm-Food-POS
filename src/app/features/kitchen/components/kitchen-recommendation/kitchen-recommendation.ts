@@ -24,7 +24,7 @@ export class KitchenRecommendation {
           icon: 'pi-check-circle',
           color: 'text-emerald-400',
           title: 'Kitchen operating normally',
-          shortMessage: 'Everything is running smoothly.',
+          shortMessage: 'Kitchen is running smoothly.',
           description:
             'Current workload is healthy. Continue normal kitchen operations.',
           actions: [
