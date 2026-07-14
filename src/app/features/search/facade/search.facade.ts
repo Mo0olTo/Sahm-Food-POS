@@ -28,7 +28,7 @@ export class SearchFacade {
     });
 
   }
-
+  
   readonly results = this.store.results;
 
   readonly query = this.store.query;

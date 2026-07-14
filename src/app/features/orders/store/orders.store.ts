@@ -42,9 +42,9 @@ export class OrdersStore {
   readonly selectedOrderId = this._selectedOrderId.asReadonly(); 
 
   constructor() {
-    console.log('OrdersStore Created');
+   
     this.offline.synced.subscribe(({ action, result }) => {
-      console.log('SYNC EVENT', action.type);
+  
       // CREATE_ORDER
     if (action.type === 'CREATE_ORDER') {
 
@@ -179,7 +179,7 @@ export class OrdersStore {
       order.status === 'ready'
     );
   
-    console.log(kitchenOrders);
+ 
   
     return kitchenOrders.length;
     
@@ -379,7 +379,7 @@ export class OrdersStore {
   
   
     // optimistic update
-    console.log('Create Order Called');
+
     this._orders.update(orders => [
       tempOrder,
       ...orders

@@ -77,7 +77,7 @@ export class SearchInput {
     const value = (event.target as HTMLInputElement).value;
 
     this.value.set(value);
-    this.activeIndex.set(-1);
+    this.facade.setSelectedIndex(-1);
     this.searchSubject.next(value);
 
   }
@@ -99,7 +99,7 @@ export class SearchInput {
   }
 
   protected onKeydown(event: KeyboardEvent): void {
-
+    
     const results = this.results();
     const maxIndex = results.length - 1;
 
@@ -109,11 +109,20 @@ export class SearchInput {
 
         event.preventDefault();
 
+        const results = this.results();
+        const maxIndex = results.length - 1;
+
         if (maxIndex < 0) return;
 
-        const next = this.activeIndex() >= maxIndex ? 0 : this.activeIndex() + 1;
+        const currentIndex = this.facade.selectedIndex();
 
-        this.activeIndex.set(next);
+        const next =
+          currentIndex >= maxIndex
+            ? 0
+            : currentIndex + 1;
+
+        this.facade.setSelectedIndex(next);
+
         this.navigate.emit(next);
 
         break;
@@ -123,40 +132,62 @@ export class SearchInput {
 
         event.preventDefault();
 
+        const results = this.results();
+        const maxIndex = results.length - 1;
+      
         if (maxIndex < 0) return;
-
-        const next = this.activeIndex() <= 0 ? maxIndex : this.activeIndex() - 1;
-
-        this.activeIndex.set(next);
+      
+        const currentIndex = this.facade.selectedIndex();
+      
+        const next =
+          currentIndex <= 0
+            ? maxIndex
+            : currentIndex - 1;
+      
+        this.facade.setSelectedIndex(next);
+      
         this.navigate.emit(next);
-
+      
         break;
       }
 
       case 'Enter': {
 
         event.preventDefault();
-
+      
         const query = this.value().trim();
-
-        if (this.activeIndex() >= 0 && results[this.activeIndex()]) {
-
-          const product = results[this.activeIndex()];
-
-          this.facade.addRecentSearch(query);
+      
+        const selectedIndex = this.facade.selectedIndex();
+      
+        // User selected a result using keyboard
+        if (
+          selectedIndex >= 0 &&
+          results[selectedIndex]
+        ) {
+      
+          const product = results[selectedIndex];
+      
+          this.facade.addRecentSearch(product.name);
+      
           this.submit.emit(product.name);
+      
+          this.facade.setSelectedIndex(-1);
+      
           this.inputRef()?.nativeElement.blur();
-
+      
           return;
         }
-
+      
+      
+        // Normal search
         if (query) {
-
+      
           this.facade.addRecentSearch(query);
+      
           this.submit.emit(query);
-
+      
         }
-
+      
         break;
       }
 
@@ -173,7 +204,7 @@ export class SearchInput {
   protected clear(): void {
 
     this.value.set('');
-    this.activeIndex.set(-1);
+    this.facade.setSelectedIndex(-1);
     this.facade.setQuery('');
     this.searchSubject.next('');
 
