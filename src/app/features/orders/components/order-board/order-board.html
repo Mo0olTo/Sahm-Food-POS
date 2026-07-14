@@ -14,12 +14,12 @@
 
 } @else {
 
-  <div class="grid h-full grid-cols-1 gap-4 md:grid-cols-9 md:gap-6">
+  <div class="grid h-full grid-cols-1 gap-4 xl:grid-cols-9 xl:gap-6">
 
     <!-- Board -->
-    <div class="col-span-1 md:col-span-9">
+    <div class="col-span-1 xl:col-span-9">
 
-      <div class="grid grid-cols-1 gap-4 h-full sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+      <div class="grid grid-cols-1 gap-4 h-full sm:grid-cols-1 xl:grid-cols-3 xl:gap-6">
 
         @for (column of columns(); track column.channel) {
 
@@ -36,7 +36,7 @@
     </div>
 
     <!-- Details Panel -->
-    <div class="col-span-1 md:col-span-3 md:max-h-[calc(100vh-6rem)] md:sticky md:top-4">
+    <div class="col-span-1 xl:col-span-3 xl:max-h-[calc(100vh-6rem)] xl:sticky xl:top-4">
 
       @if (detailsOpen()) {
 
