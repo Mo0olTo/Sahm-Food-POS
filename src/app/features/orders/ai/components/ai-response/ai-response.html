@@ -1,1 +1,11 @@
-<p>ai-response works!</p>
+<div class="mt-4 space-y-3">
+
+    @for (message of messages(); track message.id) {
+  
+      <app-ai-message
+        [message]="message">
+      </app-ai-message>
+  
+    }
+  
+  </div>

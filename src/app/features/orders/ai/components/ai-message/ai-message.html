@@ -1,1 +1,40 @@
-<p>ai-message works!</p>
+<div
+  class="flex items-end gap-2"
+  [class.flex-row-reverse]="message().role === 'user'">
+
+  @if (message().role === 'assistant') {
+
+    <div
+      class="flex h-8 w-8 shrink-0 items-center justify-center
+             rounded-full bg-[var(--color-primary)]/10 text-sm"
+      aria-hidden="true">
+      🤖
+    </div>
+
+  } @else {
+
+    <div
+      class="flex h-8 w-8 shrink-0 items-center justify-center
+             rounded-full bg-[var(--color-primary)] text-xs font-bold text-black"
+      aria-hidden="true">
+      U
+    </div>
+
+  }
+
+  <div
+    class="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed"
+    [class.bg-[var(--color-primary)]]="message().role === 'user'"
+    [class.text-black]="message().role === 'user'"
+    [class.bg-[var(--color-bg)]]="message().role === 'assistant'"
+    [class.text-[var(--color-main-text)]]="message().role === 'assistant'"
+    [class.border]="message().role === 'assistant'"
+    [class.border-[var(--color-borders)]]="message().role === 'assistant'">
+
+    <p class="whitespace-pre-wrap break-words">
+      {{ message().content }}
+    </p>
+
+  </div>
+
+</div>
