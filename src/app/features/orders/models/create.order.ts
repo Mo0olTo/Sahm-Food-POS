@@ -22,4 +22,8 @@ export interface CreateOrder {
   items: OrderItem[];
 
   createdAt: string;
+
+  clientId?: string;
   }
+
+  

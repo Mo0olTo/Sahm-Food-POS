@@ -6,6 +6,11 @@ import { Order } from '../models/order.model';
 import { OrderStatus } from '../models/order-status.type';
 import { KitchenLevel } from '../../kitchen/models/kitchen-level.type';
 import { CreateOrder } from '../models/create.order';
+import { OfflineService } from '../../../core/offline/offline.service';
+import { OfflineAction } from '../../../core/offline/models/offline.action.model';
+import { NetworkService } from '../../../core/offline/network.service';
+import { OrdersOfflineHandler } from '../../../core/offline/orders-offline.handler.service';
+import { UpdateOrderPayload } from '../../../core/offline/models/update.order.payload';
 
 @Injectable({
   providedIn: 'root',
@@ -13,25 +18,78 @@ import { CreateOrder } from '../models/create.order';
 export class OrdersStore {
 
   private readonly ordersService = inject(OrdersService);
-
+  private readonly offline = inject(OfflineService);
+  private readonly network = inject(NetworkService);
   // ==========================
   // State
   // ==========================
 
   private readonly _orders = signal<Order[]>([]);
   private readonly _selectedOrderId = signal<number | null>(null);
-
+  private readonly isSubmitting = signal(false);
   private readonly _loading = signal(false);
   private readonly _error = signal<string | null>(null);
 
-  readonly search = signal('');
+  readonly search = signal(''); 
+
+  
 
   // ==========================
   // Readonly State
   // ==========================
 
   readonly orders = this._orders.asReadonly();
-  readonly selectedOrderId = this._selectedOrderId.asReadonly();
+  readonly selectedOrderId = this._selectedOrderId.asReadonly(); 
+
+  constructor() {
+    console.log('OrdersStore Created');
+    this.offline.synced.subscribe(({ action, result }) => {
+      console.log('SYNC EVENT', action.type);
+      // CREATE_ORDER
+    if (action.type === 'CREATE_ORDER') {
+
+      const data = result as {
+        tempId: number;
+        clientId:string
+        createdOrder: Order;
+      };
+
+      this._orders.update(orders =>
+        orders.map(order =>
+          order.id === data.tempId
+            ? {
+                ...data.createdOrder,
+                clientId: data.clientId,
+                syncStatus: 'synced',
+              }
+            : order
+        )
+      );
+
+      return;
+    }
+
+    // UPDATE_ORDER
+    if (action.type === 'UPDATE_ORDER') {
+
+      const data = action.payload as UpdateOrderPayload
+
+      this._orders.update(orders =>
+        orders.map(order =>
+          order.id === data.id
+            ? {
+                ...order,
+                id:data.id,
+                syncStatus: 'synced',
+              }
+            : order
+        )
+      );
+
+    }
+    });
+  
+  }
 
   readonly loading = this._loading.asReadonly();
   readonly error = this._error.asReadonly();
@@ -285,33 +343,56 @@ export class OrdersStore {
     this._loading.set(true);
     this._error.set(null);
   
-    this.ordersService
-      .createOrder(order)
-      .pipe(
-        finalize(() => this._loading.set(false))
-      )
-      .subscribe({
-  
-        next: (createdOrder) => {
-  
-          this._orders.update(orders => [
-            createdOrder,
-            ...orders
-          ]);
-  
+    const clientId = crypto.randomUUID();
+    const tempId = Date.now();
+
+    const tempOrder: Order = {
+      ...order,
+      id: tempId,
+      clientId,
+      status: 'received',
+      orderNumber: `TEMP-${tempId}`,
+      createdAt: new Date().toISOString(),
+      syncStatus: 'pending',
+      delayMinutes: 0,
+      isDelayed: false,
+    };
+
+    const action: OfflineAction<{
+      tempId: number;
+      clientId: string;
+      order: CreateOrder;
+    }> = {
+      id: crypto.randomUUID(),
+      type: 'CREATE_ORDER',
+      payload: {
+        tempId,
+        clientId,
+        order: {
+          ...order,
+          clientId,
         },
+      },
+      createdAt: Date.now(),
+      retryCount: 0,
+    };
   
-        error: (err) => {
   
-          console.error(err);
+    // optimistic update
+    console.log('Create Order Called');
+    this._orders.update(orders => [
+      tempOrder,
+      ...orders
+    ]);
   
-          this._error.set(
-            'Failed to create order.'
-          );
   
-        },
   
-      });
+   
+  
+    this.offline.execute(action);
+  
+  
+    this._loading.set(false);
   
   }
 
@@ -319,7 +400,28 @@ export class OrdersStore {
 
     // this._loading.set(true);
     this._error.set(null);
-  
+    const action: OfflineAction<{
+      id: number;
+      order: Order;
+    }> = {
+      id: crypto.randomUUID(),
+      type: 'UPDATE_ORDER',
+      payload: {
+        id,
+        order,
+      },
+      createdAt: Date.now(),
+      retryCount: 0,
+    };
+    
+    if (!this.network.isOnline()) {
+
+      this.offline.execute(action);
+    
+      return;
+    
+    }
+
     this.ordersService
       .updateOrder(id, order)
       .pipe(
@@ -346,56 +448,95 @@ export class OrdersStore {
 
   updateOrderStatus(id: number, status: OrderStatus): void {
 
+
     const currentOrder = this._orders()
       .find(o => o.id === id);
+  
   
     if (!currentOrder) return;
   
   
-    // update UI immediately
+  
+    // optimistic update
+  
     this._orders.update(orders =>
       orders.map(order =>
         order.id === id
           ? {
               ...order,
-              status
+              status,
+              syncStatus:'pending'
             }
           : order
       )
     );
   
   
-    // sync with API
-    this.ordersService
-      .updateOrder(id, {
-        ...currentOrder,
-        status
-      })
-      .subscribe({
   
-        error: () => {
+    const updatedOrder: Order = {
   
-          // rollback if failed
-          this._orders.update(orders =>
-            orders.map(order =>
-              order.id === id
-                ? currentOrder
-                : order
-            )
-          );
+      ...currentOrder,
   
-        }
+      status,
   
-      });
+    };
+  
+  
+  
+    const action: OfflineAction<{
+      id:number;
+      clientId:string|undefined;
+      order:Order;
+    }> = {
+  
+  
+      id:crypto.randomUUID(),
+  
+      type:'UPDATE_ORDER',
+  
+      payload:{
+        id,
+        clientId: currentOrder.clientId,
+        order:updatedOrder
+      },
+  
+      createdAt:Date.now(),
+  
+      retryCount:0
+  
+    };
+  
+  
+  
+    this.offline.execute(action);
   
   }
-
   
   deleteOrder(id:number): void {
 
   this._loading.set(true);
   this._error.set(null);
+  const action: OfflineAction<{
+    id: number;
+  }> = {
+    id: crypto.randomUUID(),
+    type: 'DELETE_ORDER',
+    payload: {
+      id,
+    },
+    createdAt: Date.now(),
+    retryCount: 0,
+  };
+  
+  if (!this.network.isOnline()) {
 
+  this.offline.execute(action);
+
+  this._loading.set(false);
+
+  return;
+
+}
   this.ordersService
     .deleteOrder(id)
     .pipe(

@@ -23,8 +23,13 @@ export interface Order {
 
   priority : OrderPriority; 
 
-  delayMinutes: number;
+  delayMinutes?: number;
 
-  isDelayed: boolean;
+  isDelayed?: boolean; 
+
+  syncStatus?: 'synced' | 'pending'; 
+
+  clientId?: string;
+
 
 }

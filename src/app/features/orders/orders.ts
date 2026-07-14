@@ -10,4 +10,7 @@ import { OrderToolbar } from "./components/order-toolbar/order-toolbar";
   styleUrl: './orders.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Orders {}
+export class Orders {
+
+  
+}

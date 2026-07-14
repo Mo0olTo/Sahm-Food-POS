@@ -1,16 +1,28 @@
-<section class="h-[90px] w-full border-b border-[var(--color-borders)]">
-    <div class="flex h-full w-full items-center justify-start gap-3 px-4 sm:px-6">
+<header
+  class="relative z-30 border-b border-[var(--color-borders)] bg-[var(--color-bg)] px-0 md:px-3">
+    <div class=" flex flex-col gap-3 px-4 py-3
+    lg:flex-row lg:items-center lg:justify-between">
 
-        <!-- kitchen bar -->
+        <div class="flex items-center gap-4">
+              <!-- kitchen bar -->
         <app-kitchen-status
-            class="block"
+            class="block shrink-0"
             [kitchen]="kitchen()">
         </app-kitchen-status>
 
         <!-- kitchen message  -->
         <app-kitchen-recommendation
-        [kitchen]="kitchen()"
-        variant="compact">
-    </app-kitchen-recommendation>
+            class="hidden shrink-0 lg:flex"
+            [kitchen]="kitchen()"
+            variant="compact">
+        </app-kitchen-recommendation>
+        </div>
+
+
+        <!-- search -->
+         <app-search
+            class="w-full lg:max-w-xl lg:flex-1"
+            (productSelected)="onProductSelected($event)">
+        </app-search>
     </div>
-</section>
+</header>

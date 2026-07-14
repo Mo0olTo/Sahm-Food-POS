@@ -1,0 +1,9 @@
+export const SEARCH_CONSTANTS = {
+
+    DEBOUNCE_TIME: 300,
+  
+    MAX_RECENT_SEARCHES: 5,
+  
+    MIN_QUERY_LENGTH: 2
+  
+  };

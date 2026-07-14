@@ -1,9 +1,4 @@
-export type ProductCategory =
-  | 'pizza'
-  | 'burger'
-  | 'drink'
-  | 'dessert';
-
+export type ProductCategory =  'pizza'| 'burger'| 'drink'| 'sandwich'| 'salad'| 'side'| 'pasta'| 'dessert' |'main' | 'coffee';
 
 export interface Product {
 

@@ -1,6 +1,6 @@
 @if (variant() === 'compact') {
 
-    <div class="flex items-center gap-3">
+    <div class="w-full flex flex-col md:flex-row justify-center items-center gap-1 md:gap-3">
     
         <i
             class="pi text-xl"
@@ -8,7 +8,7 @@
         </i>
     
         <span
-            class="text-sm font-medium text-[var(--color-main-text)]">
+            class="text-xs md:text-sm font-medium text-[var(--color-main-text)]">
             {{ recommendation().shortMessage }}
         </span>
     

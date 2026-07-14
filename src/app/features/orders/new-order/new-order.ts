@@ -95,11 +95,7 @@ export class NewOrder {
       channel: 'walk-in',
       total: 0,
     });
-    this.items.set([  {
-      name: '',
-      price: 0,
-      quantity: 1,
-    }]);
+    this.items.set([ ]);
     this.onClose();
   
   } 

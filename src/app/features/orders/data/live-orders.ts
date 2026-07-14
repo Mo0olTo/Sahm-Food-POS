@@ -18,7 +18,7 @@ export class LiveOrders {
     orders: Signal<Order[]>
   ): Observable<LiveOrderEvent | null> {
 
-    return interval(5000).pipe(
+    return interval(7000).pipe(
 
       map(() => {
 
